@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Offer</title>
+
+<script>
+function validateForm() {
+    const nom = document.getElementById("name").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const categorie = document.getElementById("categorie").value;
+    const location = document.getElementById("location").value.trim();
+    
+    const author = document.getElementById("author") 
+        ? document.getElementById("author").value.trim() 
+        : "";
+
+    if (!nom) {
+        alert("Offer title is required");
+        return false;
+    }
+
+    if (nom.length < 3) {
+        alert("The offer title must contain at least 3 characters");
+        return false;
+    }
+
+    if (!description) {
+        alert("Description is required");
+        return false;
+    }
+
+    if (!categorie) {
+        alert("Please select a category");
+        return false;
+    }
+
+    if (!location) {
+        alert("Location is required");
+        return false;
+    }
+
+    if (author !== "" && !author) {
+        alert("Author is required");
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+
+</head>
+
+<body>
+<h1>Add New Offer</h1>
+
+<form action="ajout.php" method="POST" onsubmit="return validateForm()">
+
+    <label>Title</label><br>
+    <input type="text" id="name" name="nom" placeholder="Enter offer"><br><br>
+    
+    
+
+    <label>Description:</label><br>
+    <textarea id="description" name="description" placeholder="Enter offer description"></textarea><br><br>
+
+    <label>Category:</label><br>
+    <select id="categorie" name="categorie">
+        <option value=""> Select Category </option>
+        <option value="Accommodation">Accommodation</option>
+        <option value="Education">Education</option>
+        <option value="Employment">Employment</option>
+    </select><br><br>
+
+    <label>Location:</label><br>
+    <input type="text" id="location" name="location" placeholder="Enter location"><br><br>
+
+
+    <button type="submit">Add Offer</button>
+</form>
+
+</body>
+</html>
