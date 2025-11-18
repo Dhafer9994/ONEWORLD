@@ -63,11 +63,33 @@ $liste = $oc->listeOffre();
         text-decoration: none;
         margin: 0 5px;
     }
+    .create-btn {
+    display: inline-block;
+    background-color:  #fff;
+    color: black;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.create-btn:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+}
+
 </style>
 </head>
 <body>
 
-<h2>Liste des Offres</h2>
+<h2>Offers List</h2>
+<a href="create.php" class="create-btn">
+    <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png" width="20" style="vertical-align: middle; margin-right:8px;">
+    Create Offer
+</a>
 
 <table>
     <tr>

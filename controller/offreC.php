@@ -5,7 +5,6 @@ class Offrec {
     public function addoffre($offre) {
         $db = config::getConnexion();
         try {
-            // Prepare the insert statement for the "offre" table
             $req = $db->prepare('
     INSERT INTO offre 
     (titre,categorie, description, location, status, auteur) 
@@ -13,7 +12,6 @@ class Offrec {
 ');
 
 
-            // Execute with values from the $offre object
             $req->execute([
                 'categorie' => $offre->getcategorie(),
                 'titre'         => $offre->gettitre(),
@@ -48,7 +46,6 @@ public function deleteOffre($id){
         }
     }
 
-   // Récupérer une offre par son ID
 public function getOffreById($id){
     $db = config::getConnexion();
     try {
@@ -61,7 +58,6 @@ public function getOffreById($id){
     }
 }
 
-// Mettre à jour une offre
 public function updateOffre($id, $categorie, $titre, $description, $location, $status, $auteur){
     $db = config::getConnexion();
     try {
