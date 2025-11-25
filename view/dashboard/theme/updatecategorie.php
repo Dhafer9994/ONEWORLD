@@ -36,12 +36,14 @@ include 'sidebar.php';
             <div class="form-group">
               <label>Name:</label>
               <input type="text" id="nom" name="nom" class="form-control" 
-                     value="<?= htmlspecialchars($categorie['nom']) ?>">
+                     value="<?= isset($categorie['nom']) ? $categorie['nom'] : '' ?>">
+              <small id="err_nom" class="text-danger"></small>
             </div>
 
             <div class="form-group">
               <label>Description:</label>
-              <textarea id="description" name="description" class="form-control"><?= htmlspecialchars($categorie['description']) ?></textarea>
+              <textarea id="description" name="description" class="form-control"><?= isset($categorie['description']) ? $categorie['description'] : '' ?></textarea>
+              <small id="err_description" class="text-danger"></small>
             </div>
 
             <button type="submit" name="update" class="btn btn-primary">Update</button>
@@ -56,12 +58,23 @@ include 'sidebar.php';
 
 <script>
 function validateForm() {
+    let valid = true;
+
+    // Clear previous errors
+    document.querySelectorAll(".text-danger").forEach(el => el.innerHTML = "");
+
     const nom = document.getElementById('nom').value;
     const description = document.getElementById('description').value;
 
-    if (!nom) { alert('Le nom est requis !'); return false; }
-    if (!description) { alert('La description est requise !'); return false; }
+    if (!nom) {
+        document.getElementById('err_nom').innerHTML = "Name is required.";
+        valid = false;
+    }
+    if (!description) {
+        document.getElementById('err_description').innerHTML = "Description is required.";
+        valid = false;
+    }
 
-    return true;
+    return valid;
 }
 </script>
