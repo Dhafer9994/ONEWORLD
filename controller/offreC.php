@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include_once __DIR__ . '/../config.php';
 
 class Offrec {
     public function addoffre($offre) {
@@ -45,37 +45,43 @@ public function deleteOffre($id){
             die("Error: ".$e->getMessage());
         }
     }
-
-public function getOffreById($id){
-    $db = config::getConnexion();
-    try {
-        $req = $db->prepare("SELECT * FROM offre WHERE id=:id");
-        $req->execute(['id' => $id]);
-        $offre = $req->fetch(); // récupère une seule ligne
-        return $offre;
-    } catch (Exception $e) {
-        die("Error: ".$e->getMessage());
+ public function getOffreById($id){
+        $db = config::getConnexion();
+        try {
+            $req = $db->prepare("SELECT * FROM offre WHERE id=:id");
+            $req->execute(['id' => $id]);
+            $offre = $req->fetch(); // fetch a single row
+            return $offre;
+        } catch (Exception $e) {
+            die("Error: ".$e->getMessage());
+        }
     }
-}
 
-public function updateOffre($id, $categorie, $titre, $description, $location, $status, $auteur){
-    $db = config::getConnexion();
-    try {
-        $req = $db->prepare("UPDATE offre 
-                             SET categorie=:categorie, titre=:titre, description=:description, location=:location, status=:status, auteur=:auteur
-                             WHERE id=:id");
-        $req->execute([
-            'id' => $id,
-            'categorie' => $categorie,
-            'titre' => $titre,
-            'description' => $description,
-            'location' => $location,
-            'status' => $status,
-            'auteur' => $auteur
-        ]);
-    } catch (Exception $e) {
-        die("Error: ".$e->getMessage());
+    // Update an offer
+    public function updateOffre($id, $categorie, $titre, $description, $location, $status, $auteur){
+        $db = config::getConnexion();
+        try {
+            $req = $db->prepare("
+                UPDATE offre
+                SET categorie=:categorie,
+                    titre=:titre,
+                    description=:description,
+                    location=:location,
+                    status=:status,
+                    auteur=:auteur
+                WHERE id=:id
+            ");
+            $req->execute([
+                'id' => $id,
+                'categorie' => $categorie,
+                'titre' => $titre,
+                'description' => $description,
+                'location' => $location,
+                'status' => $status,
+                'auteur' => $auteur
+            ]);
+        } catch (Exception $e) {
+            die("Error: ".$e->getMessage());
+        }
     }
-}
-
 }

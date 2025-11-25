@@ -42,15 +42,4 @@ public function setstatus(string $n){$this->status=$n;}
 public function setauteur(string $n){$this->auteur=$n;}
 
 }
-class categorie{
-    private int $id;
-    private string $nom;
-    private string $description;
 
-}
-class application{
-  private int $id;
-  private int $id_user;
-  private int $id_offre;
-  private string $status;  
-}

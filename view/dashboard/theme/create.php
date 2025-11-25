@@ -1,0 +1,142 @@
+<?php 
+include '../../../controller/offreC.php';
+include '../../../model/offre.php';        
+
+$activeMenu = 'offers';   // pour ouvrir le menu Offres
+$activePage = 'offers';   // pour marquer la page active
+
+$oc = new Offrec();
+
+if(isset($_POST['add'])) {
+    $offre = new offre(
+        $_POST['titre'],
+        $_POST['categorie'],
+        $_POST['description'],
+        $_POST['location'],
+        $_POST['status'],
+        $_POST['auteur']
+    );
+
+    $oc->addOffre($offre);
+
+    header("Location: offers.php");  // redirection vers la page offres
+    exit;
+}
+include 'header.php';
+include 'sidebar.php';
+
+?>
+<div class="page-wrapper">
+  <div class="content-wrapper">
+    <div class="content">
+
+      <div class="card card-default">
+        <div class="card-header">
+          <h2>Create Offer</h2>
+        </div>
+
+        <div class="card-body">
+          <form method="POST" onsubmit="return validateCreateForm();">
+
+            <div class="form-group">
+              <label>Category:</label>
+              <select name="categorie" id="categorie" class="form-control">
+                <option value="">-- Select Category --</option>
+                <option value="Employment">Employment</option>
+                <option value="Accommodation">Accommodation</option>
+                <option value="Education">Education</option>
+              </select>
+              <small id="err_categorie" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Title:</label>
+              <input type="text" id="titre" name="titre" class="form-control">
+              <small id="err_titre" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Description:</label>
+              <textarea id="description" name="description" class="form-control"></textarea>
+              <small id="err_description" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Location:</label>
+              <input type="text" id="location" name="location" class="form-control">
+              <small id="err_location" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Status:</label>
+              <select id="status" name="status" class="form-control">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+              <small id="err_status" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Author:</label>
+              <input type="text" id="auteur" name="auteur" class="form-control">
+              <small id="err_auteur" class="text-danger"></small>
+            </div>
+
+            <button type="submit" name="add" class="btn btn-primary">Create Offer</button>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function validateCreateForm() {
+
+    document.querySelectorAll(".text-danger").forEach(el => el.innerHTML = "");
+
+    let valid = true;
+
+    const categorie = document.getElementById("categorie").value;
+    const titre = document.getElementById("titre").value;
+    const description = document.getElementById("description").value;
+    const location = document.getElementById("location").value;
+    const status = document.getElementById("status").value;
+    const auteur = document.getElementById("auteur").value;
+
+    if (!categorie) {
+        document.getElementById("err_categorie").innerHTML = "Please choose a category.";
+        valid = false;
+    }
+
+    if (titre === "") {
+        document.getElementById("err_titre").innerHTML = "Title cannot be empty.";
+        valid = false;
+    }
+
+    if (description === "") {
+        document.getElementById("err_description").innerHTML = "Description cannot be empty.";
+        valid = false;
+    }
+
+    if (location === "") {
+        document.getElementById("err_location").innerHTML = "Location cannot be empty.";
+        valid = false;
+    }
+
+    if (!status) {
+        document.getElementById("err_status").innerHTML = "Please choose a status.";
+        valid = false;
+    }
+
+    if (auteur === "") {
+        document.getElementById("err_auteur").innerHTML = "Author cannot be empty.";
+        valid = false;
+    }
+
+    return valid; 
+}
+</script>
