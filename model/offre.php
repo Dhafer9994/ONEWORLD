@@ -1,7 +1,7 @@
 <?php
 class offre{
     private int $id;
-    private string $categorie;
+    private int $categorie;
     private string $titre;
     private string $description;
     private string $location;
@@ -34,7 +34,7 @@ public function getlocation(){return $this->location;}
 public function getstatus(){return $this->status;}
 public function getauteur(){return $this->auteur;}
 
-public function setcategorie(string $n){$this->categorie=$n;}
+public function setcategorie(int $n){$this->categorie=$n;}
 public function settitle(string $n){$this->titre=$n;}
 public function setdescription(string $d){$this->description=$d;}
 public function setlocation(string $n){$this->location=$n;}

@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/../config.php';
+include_once  __DIR__ . '/../config.php';
 class categorieC{
     public function addcategorie($categorie) {
         $db = config::getConnexion();
@@ -40,17 +40,15 @@ public function deletecategorie($id){
             die("Error: ".$e->getMessage());
         }
     }
-  public function getCategorieById($id) {
-        $db = config::getConnexion();
-        try {
-            $req = $db->prepare("SELECT * FROM categorie WHERE id = :id");
-            $req->execute(['id' => $id]);
-            $categorie = $req->fetch(); // récupère une seule ligne
-            return $categorie;
-        } catch (Exception $e) {
-            die("Error: " . $e->getMessage());
-        }
-    }
+ public function getCategorieById($id) {
+    $db = config::getConnexion();
+    $sql = "SELECT * FROM categorie WHERE id = :id";
+    $query = $db->prepare($sql);
+    $query->bindValue(':id', $id);
+    $query->execute();
+    return $query->fetch();
+}
+
 
     public function updateCategorie($id, $nom, $description) {
         $db = config::getConnexion();
@@ -65,4 +63,25 @@ public function deletecategorie($id){
             die("Error: " . $e->getMessage());
         }
     }
+    public function getOffresByCategorie($id_categorie) {
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare("
+            SELECT o.*, c.nom AS categorie_nom
+            FROM offre o
+            INNER JOIN categorie c ON o.categorie = c.id
+            WHERE o.categorie = :id
+        ");
+
+        $query->execute([
+            'id' => $id_categorie
+        ]);
+
+        return $query->fetchAll();
+    } catch (Exception $e) {
+        die('Error: '.$e->getMessage());
+    }
+}
+
 };

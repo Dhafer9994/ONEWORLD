@@ -1,25 +1,31 @@
 <?php
 include '../../../controller/offreC.php';
-$activeMenu = 'offers';  // Menu ouvert
-$activePage = 'offers';  // Page active
+include '../../../controller/categorieC.php';
 
+$activeMenu = 'offers';  
+$activePage = 'offers';
 
 $oc = new Offrec();
+$cc = new categorieC();
 $id = $_GET['id'];
 $offre = $oc->getOffreById($id); 
 
+// Get all categories dynamically
+$categories = $cc->listecategorie();
+
 if (isset($_POST['update'])) {
-    $categorie = $_POST['categorie'];
+    $id_categorie = $_POST['categorie'];  // send category ID
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $location = $_POST['location'];
     $status = $_POST['status'];
     $auteur = $_POST['auteur'];
 
-    $oc->updateOffre($id, $categorie, $titre, $description, $location, $status, $auteur);
+    $oc->updateOffre($id, $id_categorie, $titre, $description, $location, $status, $auteur);
     header("Location: offers.php");
     exit;
 } 
+
 include 'header.php';
 include 'sidebar.php';
 ?>
@@ -45,9 +51,12 @@ include 'sidebar.php';
               <label>Category:</label>
               <select id="categorie" name="categorie" class="form-control">
                 <option value="">--Select Category--</option>
-                <option value="Employment" <?= isset($offre['categorie']) && $offre['categorie']=='Employment'?'selected':'' ?>>Employment</option>
-                <option value="Accommodation" <?= isset($offre['categorie']) && $offre['categorie']=='Accommodation'?'selected':'' ?>>Accommodation</option>
-                <option value="Education" <?= isset($offre['categorie']) && $offre['categorie']=='Education'?'selected':'' ?>>Education</option>
+                <?php foreach($categories as $cat): ?>
+                    <option value="<?= $cat['id'] ?>" 
+                        <?= isset($offre['id_categorie']) && $offre['id_categorie'] == $cat['id'] ? 'selected' : '' ?>>
+                        <?= $cat['nom'] ?>
+                    </option>
+                <?php endforeach; ?>
               </select>
               <small id="err_categorie" class="text-danger"></small>
             </div>
@@ -89,45 +98,3 @@ include 'sidebar.php';
     </div>
   </div>
 </div>
-
-<script>
-function validateForm() {
-    let valid = true;
-
-    document.querySelectorAll(".text-danger").forEach(el => el.innerHTML = "");
-
-    const titre = document.getElementById('titre').value;
-    const categorie = document.getElementById('categorie').value;
-    const description = document.getElementById('description').value;
-    const location = document.getElementById('location').value;
-    const status = document.getElementById('status').value;
-    const auteur = document.getElementById('auteur').value;
-
-    if (!titre) {
-        document.getElementById('err_titre').innerHTML = "Title is required.";
-        valid = false;
-    }
-    if (!categorie) {
-        document.getElementById('err_categorie').innerHTML = "Category is required.";
-        valid = false;
-    }
-    if (!description) {
-        document.getElementById('err_description').innerHTML = "Description is required.";
-        valid = false;
-    }
-    if (!location) {
-        document.getElementById('err_location').innerHTML = "Location is required.";
-        valid = false;
-    }
-    if (!status) {
-        document.getElementById('err_status').innerHTML = "Status is required.";
-        valid = false;
-    }
-    if (!auteur) {
-        document.getElementById('err_auteur').innerHTML = "Author is required.";
-        valid = false;
-    }
-
-    return valid;
-}
-</script>

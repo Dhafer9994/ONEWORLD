@@ -41,19 +41,28 @@
           </ul>
         </li>
 
-        <!-- Produits -->
-        <li class="has-sub <?= $activeMenu=='products' ? 'active expand' : '' ?>">
-          <a class="sidenav-item-link" data-toggle="collapse" data-target="#products">
-            <i class="mdi mdi-package-variant"></i>
-            <span class="nav-text">Produits</span> <b class="caret"></b>
-          </a>
-          <ul class="collapse <?= $activeMenu=='products' ? 'show' : '' ?>" id="products">
-            <div class="sub-menu">
-              <li class="<?= $activePage=='products' ? 'active' : '' ?>"><a href="products.php">Liste des produits</a></li>
-              <li class="<?= $activePage=='categories' ? 'active' : '' ?>"><a href="categories.php">Catégories</a></li>
-            </div>
-          </ul>
-        </li>
+       <!-- Applications -->
+<li class="has-sub <?= $activeMenu=='applications' ? 'active expand' : '' ?>">
+  <a class="sidenav-item-link" data-toggle="collapse" data-target="#applications">
+    <i class="mdi mdi-file-document-box"></i>
+    <span class="nav-text">Applications</span> <b class="caret"></b>
+  </a>
+
+  <ul class="collapse <?= $activeMenu=='applications' ? 'show' : '' ?>" id="applications">
+    <div class="sub-menu">
+
+      <li class="<?= $activePage=='listeapplication' ? 'active' : '' ?>">
+        <a href="listeapplication.php">Applications</a>
+      </li>
+
+      <li class="<?= $activePage=='createapplication' ? 'active' : '' ?>">
+        <a href="createapplication.php">Ajouter une application</a>
+      </li>
+
+    </div>
+  </ul>
+</li>
+
                 <!-- categories-->
 
 <li class="has-sub <?= $activeMenu=='categories' ? 'active expand' : '' ?>">
@@ -89,14 +98,6 @@
       </ul>
     </div>
 
-    <div class="sidebar-footer">
-      <hr />
-      <div class="sidebar-footer-content">
-        <h6 class="text-uppercase">CPU Usage <span class="float-right">40%</span></h6>
-        <div class="progress progress-xs"><div class="progress-bar" style="width:40%;"></div></div>
-        <h6 class="text-uppercase mt-2">Memory Usage <span class="float-right">65%</span></h6>
-        <div class="progress progress-xs"><div class="progress-bar progress-bar-warning" style="width:65%;"></div></div>
-      </div>
-    </div>
+   
   </div>
 </aside>

@@ -2,38 +2,42 @@
 include_once __DIR__ . '/../config.php';
 
 class Offrec {
-    public function addoffre($offre) {
-        $db = config::getConnexion();
-        try {
-            $req = $db->prepare('
-    INSERT INTO offre 
-    (titre,categorie, description, location, status, auteur) 
-    VALUES (:titre, :categorie, :description, :location, :status, :auteur)
-');
+   public function addoffre($offre) {
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare('
+            INSERT INTO offre 
+            (titre, id_categorie, description, location, status, auteur) 
+            VALUES (:titre, :id_categorie, :description, :location, :status, :auteur)
+        ');
 
-
-            $req->execute([
-                'categorie' => $offre->getcategorie(),
-                'titre'         => $offre->gettitre(),
-                'description' => $offre->getdescription(),
-                'location'    => $offre->getlocation(),
-                'status'      => $offre->getstatus(),
-                'auteur'      => $offre->getauteur()
-            ]);
-        } catch (Exception $e) {
-            die('Error: ' . $e->getMessage());
-        }
+        $req->execute([
+            'id_categorie' => $offre->getcategorie(), 
+            'titre'        => $offre->gettitre(),
+            'description'  => $offre->getdescription(),
+            'location'     => $offre->getlocation(),
+            'status'       => $offre->getstatus(),
+            'auteur'       => $offre->getauteur()
+        ]);
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
     }
+}
+
     public function listeoffre(){
         $db = config::getConnexion();
-try{
-           
-    $liste = $db->query('SELECT * FROM offre');
-    return $liste;
-        }catch (exception $e){
-            die('error: ' . $e->getMessage());
-        }
+    try {
+        $sql = "
+            SELECT o.id, o.titre, o.id_categorie, c.nom AS categorie, o.description, o.location, o.status, o.auteur
+            FROM offre o
+            JOIN categorie c ON o.id_categorie = c.id
+        ";
+        $liste = $db->query($sql);
+        return $liste->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
     }
+}
 
 public function deleteOffre($id){
         $db = config::getConnexion();
@@ -56,32 +60,66 @@ public function deleteOffre($id){
             die("Error: ".$e->getMessage());
         }
     }
+    
 
     // Update an offer
-    public function updateOffre($id, $categorie, $titre, $description, $location, $status, $auteur){
+    // Update an offer
+public function updateOffre($id, $id_categorie, $titre, $description, $location, $status, $auteur){
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare("
+            UPDATE offre
+            SET id_categorie = :id_categorie,
+                titre        = :titre,
+                description  = :description,
+                location     = :location,
+                status       = :status,
+                auteur       = :auteur
+            WHERE id = :id
+        ");
+        $req->execute([
+            'id'          => $id,
+            'id_categorie'=> $id_categorie,
+            'titre'       => $titre,
+            'description' => $description,
+            'location'    => $location,
+            'status'      => $status,
+            'auteur'      => $auteur
+        ]);
+    } catch (Exception $e) {
+        die("Error: ".$e->getMessage());
+    }
+}
+public function getOffresByCategorie($id_categorie) {
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare("
+            SELECT o.*, c.nom AS categorie_nom
+            FROM offre o
+            INNER JOIN categorie c ON o.id_categorie = c.id
+            WHERE o.id_categorie = :id
+        ");
+
+        $query->execute([
+            'id' => $id_categorie
+        ]);
+
+        return $query->fetchAll();
+    } catch (Exception $e) {
+        die('Error: '.$e->getMessage());
+    }
+}
+ public function getOffreByName($name) {
         $db = config::getConnexion();
+        $sql = "SELECT * FROM offre WHERE titre = :name LIMIT 1";
         try {
-            $req = $db->prepare("
-                UPDATE offre
-                SET categorie=:categorie,
-                    titre=:titre,
-                    description=:description,
-                    location=:location,
-                    status=:status,
-                    auteur=:auteur
-                WHERE id=:id
-            ");
-            $req->execute([
-                'id' => $id,
-                'categorie' => $categorie,
-                'titre' => $titre,
-                'description' => $description,
-                'location' => $location,
-                'status' => $status,
-                'auteur' => $auteur
-            ]);
+            $stmt = $db->prepare($sql);
+            $stmt->execute(['name' => $name]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            die("Error: ".$e->getMessage());
+            echo "Error fetching offer by name: " . $e->getMessage();
+            return false;
         }
     }
 }

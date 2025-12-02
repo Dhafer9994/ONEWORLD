@@ -1,16 +1,20 @@
 <?php 
 include '../../../controller/offreC.php';
-include '../../../model/offre.php';        
+include '../../../model/offre.php';      
+include '../../../controller/categorieC.php';
 
-$activeMenu = 'offers';   // pour ouvrir le menu Offres
-$activePage = 'offers';   // pour marquer la page active
+$activeMenu = 'offers';
+$activePage = 'offers';
 
 $oc = new Offrec();
+$categoriec = new categorieC();
+$listeCategories = $categoriec->listecategorie(); // récupère les catégories depuis la DB
 
 if(isset($_POST['add'])) {
+    // créer un objet offre avec id_categorie
     $offre = new offre(
         $_POST['titre'],
-        $_POST['categorie'],
+        $_POST['categorie'], // ici c'est id_categorie
         $_POST['description'],
         $_POST['location'],
         $_POST['status'],
@@ -18,33 +22,36 @@ if(isset($_POST['add'])) {
     );
 
     $oc->addOffre($offre);
-
-    header("Location: offers.php");  // redirection vers la page offres
+    header("Location: offers.php");
     exit;
 }
+
 include 'header.php';
 include 'sidebar.php';
-
 ?>
+
 <div class="page-wrapper">
   <div class="content-wrapper">
     <div class="content">
-
       <div class="card card-default">
-        <div class="card-header">
-          <h2>Create Offer</h2>
-        </div>
-
+        <div class="card-header"><h2>Create Offer</h2></div>
         <div class="card-body">
           <form method="POST" onsubmit="return validateCreateForm();">
 
+            <!-- Sélection dynamique des catégories -->
             <div class="form-group">
               <label>Category:</label>
               <select name="categorie" id="categorie" class="form-control">
                 <option value="">-- Select Category --</option>
-                <option value="Employment">Employment</option>
-                <option value="Accommodation">Accommodation</option>
-                <option value="Education">Education</option>
+                <?php
+                if(!empty($listeCategories)) {
+                    foreach($listeCategories as $cat){
+                        echo '<option value="'.$cat['id'].'">'.$cat['nom'].'</option>';
+                    }
+                } else {
+                    echo '<option value="">No categories found</option>';
+                }
+                ?>
               </select>
               <small id="err_categorie" class="text-danger"></small>
             </div>
@@ -71,7 +78,6 @@ include 'sidebar.php';
               <label>Status:</label>
               <select id="status" name="status" class="form-control">
                 <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
               </select>
               <small id="err_status" class="text-danger"></small>
             </div>
@@ -86,18 +92,14 @@ include 'sidebar.php';
 
           </form>
         </div>
-
       </div>
-
     </div>
   </div>
 </div>
 
 <script>
 function validateCreateForm() {
-
     document.querySelectorAll(".text-danger").forEach(el => el.innerHTML = "");
-
     let valid = true;
 
     const categorie = document.getElementById("categorie").value;
@@ -111,32 +113,26 @@ function validateCreateForm() {
         document.getElementById("err_categorie").innerHTML = "Please choose a category.";
         valid = false;
     }
-
     if (titre === "") {
         document.getElementById("err_titre").innerHTML = "Title cannot be empty.";
         valid = false;
     }
-
     if (description === "") {
         document.getElementById("err_description").innerHTML = "Description cannot be empty.";
         valid = false;
     }
-
     if (location === "") {
         document.getElementById("err_location").innerHTML = "Location cannot be empty.";
         valid = false;
     }
-
     if (!status) {
         document.getElementById("err_status").innerHTML = "Please choose a status.";
         valid = false;
     }
-
     if (auteur === "") {
         document.getElementById("err_auteur").innerHTML = "Author cannot be empty.";
         valid = false;
     }
-
     return valid; 
 }
 </script>

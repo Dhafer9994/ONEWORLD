@@ -1,7 +1,3 @@
-<?php
-// You can set dynamic page titles
-$page_title = isset($page_title) ? $page_title : "OneWorld - Multipurpose Bootstrap Theme";
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,20 +5,18 @@ $page_title = isset($page_title) ? $page_title : "OneWorld - Multipurpose Bootst
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title><?php echo $page_title; ?></title>
+    <title>OneWorld</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="asset/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    
+
     <!-- Animate CSS -->
     <link href="css/animate.css" rel="stylesheet">
-    
+
     <!-- Owl-Carousel -->
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/owl.theme.css">
@@ -31,84 +25,55 @@ $page_title = isset($page_title) ? $page_title : "OneWorld - Multipurpose Bootst
     <!-- Custom CSS -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
-    
+
     <!-- Colors CSS -->
     <link rel="stylesheet" type="text/css" href="css/color/green.css" title="green">
-    <link rel="stylesheet" type="text/css" href="css/color/light-red.css" title="light-red">
-    <link rel="stylesheet" type="text/css" href="css/color/blue.css" title="blue">
-    <link rel="stylesheet" type="text/css" href="css/color/light-blue.css" title="light-blue">
-    <link rel="stylesheet" type="text/css" href="css/color/yellow.css" title="yellow">
-    <link rel="stylesheet" type="text/css" href="css/color/light-green.css" title="light-green">
 
-    <!-- Custom Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<style>.navbar.cbp-af-header {
+    background-color: black !important;
+    transition: none !important; /* remove animation */
+}
+
+
+
+    </style>
     <!-- Modernizer js -->
     <script src="js/modernizr.custom.js"></script>
-
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body class="index">
-    
-    <!-- Styleswitcher -->
-    <div class="colors-switcher">
-        <a id="show-panel" class="hide-panel"><i class="fa fa-tint"></i></a>        
-        <ul class="colors-list">
-            <li><a title="Light Red" onClick="setActiveStyleSheet('light-red'); return false;" class="light-red"></a></li>
-            <li><a title="Blue" class="blue" onClick="setActiveStyleSheet('blue'); return false;"></a></li>
-            <li class="no-margin"><a title="Light Blue" onClick="setActiveStyleSheet('light-blue'); return false;" class="light-blue"></a></li>
-            <li><a title="Green" class="green" onClick="setActiveStyleSheet('green'); return false;"></a></li>
-            <li class="no-margin"><a title="light-green" class="light-green" onClick="setActiveStyleSheet('light-green'); return false;"></a></li>
-            <li><a title="Yellow" class="yellow" onClick="setActiveStyleSheet('yellow'); return false;"></a></li>
-        </ul>
-    </div>
-    <!-- Styleswitcher End -->
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="index.php">OneWorld</a>
-            </div>
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top cbp-af-header">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="index.php">HOME</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="index.php#about-us">About</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="index.php#contact">Contact</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="offers.php">Offers</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="index.php#news">News</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#login">Login</a>
-                    </li>
-                </ul>
+            <div style="display:flex; align-items:center;">
+                <img src="logo.png" alt="Logo" style="height:40px; margin-right:8px;">
+                <a class="navbar-brand page-scroll" href="index1.php">OneWorld</a>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
-    </nav>
+
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="page-scroll" href="index1.php#home">HOME</a></li>
+                <li><a class="page-scroll" href="index1.php#about-us">About</a></li>
+                <li><a class="page-scroll" href="index1.php#contact">Contact</a></li>
+
+                <!-- Category Page -->
+                <li><a href="categorielist.php">Categories</a></li>
+
+                <li><a class="page-scroll" href="index1.php#news">News</a></li>
+                <li><a class="page-scroll" href="login.php">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
