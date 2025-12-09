@@ -1,0 +1,392 @@
+/* Modern Color Palette & Variables - Green Theme */
+:root {
+    --primary-color: #5BB12F;
+    --primary-light: #7bc954;
+    --secondary-color: #333333;
+    --bg-light: #f9f9f9;
+    --text-dark: #333333;
+    --text-muted: #666666;
+    --white: #ffffff;
+    --header-height: 80px;
+}
+
+body {
+    background-color: #ffffff;
+    color: #444;
+    font-family: 'Open Sans', sans-serif;
+    padding-top: var(--header-height);
+}
+
+/* Page Header */
+.page-title-section {
+    position: relative;
+    padding: 100px 0 80px;
+    text-align: center;
+    background: #f5f5f5;
+    /* Adjusted path to match project structure */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/header-bg-1.jpg');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.page-title-section.no-img {
+    background: linear-gradient(135deg, #333 0%, #5BB12F 100%);
+}
+
+.page-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 48px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
+    font-weight: 300;
+    margin: 0 auto 30px;
+    line-height: 28px;
+}
+
+.category-stats-badge {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(91, 177, 47, 0.4);
+}
+
+/* Offer Cards */
+.offer-card {
+    background: white;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.offer-card-img {
+    height: 180px;
+    background-color: #f9f9f9;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.offer-card-img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ddd;
+    font-size: 40px;
+}
+
+.offer-card .card-body {
+    padding: 20px;
+    text-align: left;
+    flex: 1;
+}
+
+.offer-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.offer-meta {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.offer-meta i {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.offer-category-badge {
+    font-size: 11px;
+    color: #fff;
+    background: var(--primary-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.offer-card .card-footer {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+    text-align: right;
+}
+
+.btn-apply {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 20px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.btn-apply:hover {
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.offer-item {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 3px 3px 0 0;
+    padding: 15px 20px;
+}
+
+.modal-title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1.5;
+}
+
+.close {
+    color: white;
+    opacity: 0.8;
+    text-shadow: none;
+}
+
+.close:hover {
+    color: white;
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.form-control {
+    border-radius: 3px;
+    height: 40px;
+    border-color: #eee;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.btn-submit-app {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.btn-submit-app:hover {
+    background: #ea321e;
+    color: white;
+}
+
+/* Custom Overrides for Profile Page Compatibility */
+.profile-section {
+    padding-top: 0;
+    /* Header takes care of spacing */
+}
+
+/* Profile specific styles adapted to new theme */
+.profile-avatar-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid var(--white);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.photo-upload-label {
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.photo-upload-label:hover {
+    background: #4a9424;
+}
+
+/* Profile Page Specifics */
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    color: #555;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.action-btn {
+    margin: 5px;
+    min-width: 150px;
+}
+
+/* Navbar Fixes for Modern Green */
+.navbar-default {
+    background-color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-default .navbar-brand {
+    color: var(--primary-color) !important;
+    font-weight: 700;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #333 !important;
+    font-weight: 600;
+}
+
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li.active>a,
+.navbar-default .navbar-nav>li.open>a {
+    color: var(--primary-color) !important;
+    background-color: transparent !important;
+}
+
+/* Dropdown visibility fix */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 5px 5px;
+}
+
+.navbar-default .navbar-nav .dropdown-menu>li>a {
+    color: #333 !important;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.navbar-default .navbar-nav .dropdown-menu>li>a:hover {
+    background-color: #f5f5f5;
+    color: var(--primary-color) !important;
+}
+
+/* Global Color Overrides (Blue to Green) */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #4a9424 !important;
+    border-color: #4a9424 !important;
+}
+
+.label-info {
+    background-color: var(--primary-light);
+}
+
+.label-primary {
+    background-color: var(--primary-color);
+}
+
+.navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+}

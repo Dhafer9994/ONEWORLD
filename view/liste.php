@@ -1,20 +1,20 @@
 <?php
 session_start();
 
-// Vérifier s'il y a une notification de suppression à afficher
+
 $delete_notification = null;
 if (isset($_SESSION['delete_notification'])) {
     $delete_notification = $_SESSION['delete_notification'];
-    unset($_SESSION['delete_notification']); // Supprimer après lecture
+    unset($_SESSION['delete_notification']); 
 }
 
-// Vérifier s'il y a une notification de modification
+
 $edit_success = null;
 if (isset($_GET['edit_success'])) {
     $edit_success = urldecode($_GET['edit_success']);
 }
 
-// Vérifier s'il y a une notification d'ajout
+
 $add_success = null;
 if (isset($_GET['add_success'])) {
     $add_success = urldecode($_GET['add_success']);
@@ -443,9 +443,9 @@ document.addEventListener('keydown', function(e) {
                                     <i class="mdi mdi-pencil"></i>
                                   </a>
  
-<button type="button" class="btn btn-danger btn-sm" 
+<button type="button" class="btn btn-danger btn-sm" title="Supprimer"
         onclick="showDeleteConfirmation(<?= $user['id'] ?>, '<?= htmlspecialchars($user['nom'] . ' ' . $user['prenom']) ?>')">
-    Supprimer
+    <i class="mdi mdi-delete"></i>
 </button>
                                 </div>
                               </td>

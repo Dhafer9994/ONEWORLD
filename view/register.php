@@ -56,9 +56,21 @@ if ($_POST) {
 
     <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
+    <!-- Modern Green CSS -->
+    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
 
     <style>
+        .register-card {
+            padding: 40px;
+            margin-top: -50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+        }
+
         .social-login-section {
             margin-bottom: 30px;
         }
@@ -93,7 +105,7 @@ if ($_POST) {
             flex: 1;
             padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 3px;
             background: white;
             display: flex;
             align-items: center;
@@ -119,6 +131,7 @@ if ($_POST) {
         
         .social-btn.facebook:hover {
             background: #344e86;
+            color: white;
         }
         
         .social-btn.google {
@@ -129,11 +142,18 @@ if ($_POST) {
         
         .social-btn.google:hover {
             background: #c23325;
+            color: white;
         }
         
-        .social-icon {
-            font-size: 18px;
-            font-weight: bold;
+        .form-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .page-title-section {
+            padding: 120px 0 100px;
         }
         
         @media (max-width: 768px) {
@@ -173,98 +193,114 @@ if ($_POST) {
             </div>
         </div>
     </nav>
+    
+    <!-- Page Header -->
+    <div class="page-title-section no-img">
+        <div class="container">
+            <div class="page-title">Create Account</div>
+            <div class="page-subtitle">Join OneWorld today and start your journey</div>
+        </div>
+    </div>
 
     <section class="register-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <div class="register-form">
-                        <div class="section-title text-center">
-                            <h3>Create Your Account</h3>
-                            <p>Join OneWorld today and start your journey</p>
-                        </div>
-                        
-                        <?php if ($message): ?>
-                            <div class='alert <?php echo strpos($message, 'successful') !== false ? 'alert-success' : 'alert-danger'; ?>'>
-                                <?php echo $message; ?>
+                    <div class="offer-card register-card">
+                        <div class="card-body">
+                            <div class="text-center mb-4" style="margin-bottom: 30px;">
+                                <h3 class="offer-title">Sign Up</h3>
                             </div>
-                        <?php endif; ?>
-                        
-                     
-                        <div class="social-login-section">
-                            <div class="social-buttons">
-                                <a href="<?php echo $facebook_login_url; ?>" class="social-btn facebook">
-                                    <i class="fa fa-facebook"></i>
-                                    <span>Continue with Facebook</span>
-                                </a>
+                            
+                            <?php if ($message): ?>
+                                <div class='alert <?php echo strpos($message, 'successful') !== false ? 'alert-success' : 'alert-danger'; ?>'>
+                                    <?php echo $message; ?>
+                                </div>
+                            <?php endif; ?>
+                            
+                         
+                            <div class="social-login-section">
+                                <div class="social-buttons">
+                                    <a href="<?php echo $facebook_login_url; ?>" class="social-btn facebook">
+                                        <i class="fa fa-facebook"></i>
+                                        <span>Continue with Facebook</span>
+                                    </a>
+                                    
+                                    <a href="<?php echo $google_login_url; ?>" class="social-btn google">
+                                        <i class="fa fa-google"></i>
+                                        <span>Continue with Google</span>
+                                    </a>
+                                </div>
                                 
-                                <a href="<?php echo $google_login_url; ?>" class="social-btn google">
-                                    <i class="fa fa-google"></i>
-                                    <span>Continue with Google</span>
-                                </a>
+                                <div class="social-divider">
+                                    <span>Or sign up with email</span>
+                                </div>
                             </div>
                             
-                            <div class="social-divider">
-                                <span>Or sign up with email</span>
-                            </div>
+                            <!-- FORMULAIRE EMAIL -->
+                            <form name="registerForm" method="POST" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="nom">Name</label>
+                                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Enter your name" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
+                                            <span class="form-error" id="nomError"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="prenom">User Name</label>
+                                            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Enter your username" value="<?php echo isset($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : ''; ?>">
+                                            <span class="form-error" id="prenomError"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                                    <span class="form-error" id="emailError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="image">Profile Picture</label>
+                                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="mdp">Password</label>
+                                    <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Enter your password">
+                                    <span class="form-error" id="mdpError"></span>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="telephone">Phone</label>
+                                            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Enter your phone number" value="<?php echo isset($_POST['telephone']) ? htmlspecialchars($_POST['telephone']) : ''; ?>">
+                                            <span class="form-error" id="telephoneError"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="adresse">Address</label>
+                                            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Enter your address" value="<?php echo isset($_POST['adresse']) ? htmlspecialchars($_POST['adresse']) : ''; ?>">
+                                            <span class="form-error" id="adresseError"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="margin-top: 20px;">
+                                    <button type="submit" class="btn btn-submit-app btn-block btn-lg">
+                                        <i class="fa fa-user-plus"></i> Create Account
+                                    </button>
+                                </div>
+                                
+                                <div class="text-center" style="margin-top: 20px;">
+                                    <p>Already have an account? <a href="login.php" style="color: var(--primary-color);">Login here</a></p>
+                                </div>
+                            </form>
                         </div>
-                        
-                        <!-- FORMULAIRE EMAIL -->
-                        <form name="registerForm" method="POST">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nom">Name</label>
-                                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Enter your name" value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
-                                        <span class="form-error" id="nomError"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="prenom">User Name</label>
-                                        <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Enter your username" value="<?php echo isset($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : ''; ?>">
-                                        <span class="form-error" id="prenomError"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
-                                <span class="form-error" id="emailError"></span>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="mdp">Password</label>
-                                <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Enter your password">
-                                <span class="form-error" id="mdpError"></span>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="telephone">Phone</label>
-                                        <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Enter your phone number" value="<?php echo isset($_POST['telephone']) ? htmlspecialchars($_POST['telephone']) : ''; ?>">
-                                        <span class="form-error" id="telephoneError"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="adresse">Address</label>
-                                        <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Enter your address" value="<?php echo isset($_POST['adresse']) ? htmlspecialchars($_POST['adresse']) : ''; ?>">
-                                        <span class="form-error" id="adresseError"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">
-                                <i class="fa fa-user-plus"></i> Create Account
-                            </button>
-                            
-                            <div class="text-center" style="margin-top: 20px;">
-                                <p>Already have an account? <a href="login.php" class="text-primary">Login here</a></p>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

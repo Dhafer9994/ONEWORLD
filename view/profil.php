@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Vérifier si l'utilisateur est connecté
+
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
@@ -19,102 +19,28 @@ $user = $_SESSION['user'];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneWorld - My Profile</title>
 
-    <!-- Chemins corrigés avec ../ -->
     <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/responsive.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/color/green.css">
+    <!-- Modern Green CSS -->
+    <link href="../css/modern-green.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
+    
     <style>
-        .profile-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 0;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .profile-avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid white;
-            object-fit: cover;
-        }
-        
-        .profile-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            margin-bottom: 20px;
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .info-item {
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .info-item:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            font-weight: 600;
-            color: #667eea;
-        }
-        
-        .info-value {
-            color: #666;
-        }
-        
-        .action-btn {
-            margin: 5px;
-            min-width: 150px;
-        }
-        
-        .section-title {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: #667eea;
-        }
-        
         .profile-section {
-            padding-top: 100px;
-            padding-bottom: 50px;
+            padding-bottom: 80px;
+            margin-top: 0;
+            z-index: 2;
+            position: relative;
         }
         
-        .dropdown-menu li a {
-            padding: 8px 20px;
+        .navbar-default .navbar-nav .dropdown-menu > li > a {
+            color: #333 !important;
         }
-        
-        .dropdown-menu li a i {
-            margin-right: 10px;
-            width: 20px;
-        }
-
-
-/* Visibilité du texte dans le dropdown */
-.navbar-default .navbar-nav .dropdown-menu > li > a {
-    color: #333 !important;
-}
-
-
     </style>
 </head>
 
@@ -152,7 +78,7 @@ $user = $_SESSION['user'];
                             <li><a href="edit-profile.php"><i class="fa fa-edit"></i> Edit Profile</a></li>
                            
                             <li role="separator" class="divider"></li>
-                            <li><a href="../controller/AuthController.php?action=logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#logoutModal"><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -160,33 +86,69 @@ $user = $_SESSION['user'];
         </div>
     </nav>
 
+    <!-- Page Header -->
+    <div class="page-title-section">
+        <div class="container">
+            <div class="page-title">My Profile</div>
+            <div class="page-subtitle">Manage your personal information and account settings</div>
+        </div>
+    </div>
+
     <!-- Profile Section -->
     <section class="profile-section">
         <div class="container">
+            <?php if (isset($_SESSION['update_success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 30px;">
+                    <i class="fa fa-check-circle"></i> <?php echo $_SESSION['update_success']; ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?php unset($_SESSION['update_success']); ?>
+            <?php endif; ?>
+            
+            <?php if (isset($_SESSION['password_success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-bottom: 30px;">
+                    <i class="fa fa-check-circle"></i> <?php echo $_SESSION['password_success']; ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?php unset($_SESSION['password_success']); ?>
+            <?php endif; ?>
+            
             <div class="row">
-                <div class="col-md-12">
-                    <div class="profile-header text-center">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <img src="../images/default-avatar.png" alt="Profile photo" class="profile-avatar">
-                            </div>
-                            <div class="col-md-8 text-left" style="padding-top: 30px;">
-                                <h2><?php echo htmlspecialchars($user['prenom'] . ' ' . $user['nom']); ?></h2>
-                                <p class="lead"><?php echo ucfirst($user['role']); ?> Account</p>
-                                <p><i class="fa fa-envelope"></i> <?php echo htmlspecialchars($user['email']); ?></p>
-                                <p><i class="fa fa-calendar"></i> Member since: <?php echo date('F Y'); ?></p>
+                <!-- Left Column: Avatar & Actions -->
+                <div class="col-md-4">
+                    <div class="offer-card text-center">
+                        <div class="card-body">
+                            <?php 
+                                $imgSrc = !empty($user['photo']) ? "../" . $user['photo'] : "../images/default-avatar.png"; 
+                            ?>
+                            <img src="<?php echo htmlspecialchars($imgSrc); ?>" alt="Profile photo" class="profile-avatar mb-3" style="margin-bottom: 20px;">
+                            
+                            <h3 style="margin-top: 10px; margin-bottom: 5px;"><?php echo htmlspecialchars($user['prenom'] . ' ' . $user['nom']); ?></h3>
+                            <p class="text-muted"><?php echo ucfirst($user['role']); ?> Account</p>
+                            
+                            <hr>
+                            
+                            <div class="d-grid gap-2">
+                                <a href="edit-profile.php" class="btn btn-primary btn-block action-btn">
+                                    <i class="fa fa-edit"></i> Edit Profile
+                                </a>
+                                <button class="btn btn-danger btn-block action-btn" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
+                
+                <!-- Right Column: Personal Info -->
                 <div class="col-md-8">
-                    <div class="panel panel-default profile-card">
-                        <div class="panel-body">
-                            <h3 class="section-title">Personal Information</h3>
-                            
+                    <div class="offer-card">
+                        <div class="card-body">
+                            <div class="offer-title">Personal Information</div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="info-item">
@@ -250,35 +212,11 @@ $user = $_SESSION['user'];
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="panel panel-default profile-card">
-                        <div class="panel-body">
-                            <h3 class="section-title"> Actions</h3>
-                            
-                            <div class="text-center" style="margin: 20px 0;">
-                                <a href="edit-profile.php" class="btn btn-primary btn-lg action-btn">
-                                    <i class="fa fa-edit"></i> Edit Profile
-                                </a>
-                                
-                              
-                                <a href="../controller/AuthController.php?action=logout" class="btn btn-danger btn-lg action-btn" 
-                                   onclick="return confirm('Are you sure you want to logout?')">
-                                    <i class="fa fa-sign-out"></i> Logout
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                     
-                  
-            <!-- Recent Activity Section -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default profile-card">
-                        <div class="panel-body">
-                            <h3 class="section-title">Recent Activity</h3>
-                            
+                    <!-- Recent Activity -->
+                    <div class="offer-card" style="margin-top: 30px;">
+                        <div class="card-body">
+                            <div class="offer-title">Recent Activity</div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -334,26 +272,24 @@ $user = $_SESSION['user'];
     <script src="../asset/js/bootstrap.min.js"></script>
     <script src="../js/script.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            // Animation des compteurs
-            function animateCounter(element, target) {
-                $({ count: 0 }).animate({ count: target }, {
-                    duration: 2000,
-                    easing: 'swing',
-                    step: function() {
-                        element.text(Math.floor(this.count));
-                    },
-                    complete: function() {
-                        element.text(this.count);
-                    }
-                });
-            }
-            
-            animateCounter($('.order-count'), 0);
-            animateCounter($('.completed-count'), 0);
-        });
-    </script>
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="logoutModalLabel">Ready to Leave?</h4>
+                </div>
+                <div class="modal-body">
+                    Select "Logout" below if you are ready to end your current session.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="../controller/AuthController.php?action=logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

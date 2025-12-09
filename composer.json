@@ -1,0 +1,8 @@
+{
+    "name": "dhafer9994/oneworld",
+    "description": "OneWorld Project",
+    "require": {
+        "google/apiclient": "^2.15",
+        "league/oauth2-facebook": "^2.2"
+    }
+}

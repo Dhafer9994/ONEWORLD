@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $uc->updateUser($updatedUser);
     
     if ($result) {
-        // REDIRECTION DIRECTE VERS LISTE.PHP
+     
         header('Location: liste.php?edit_success=' . urlencode("Utilisateur modifié avec succès"));
         exit();
     } else {
