@@ -19,29 +19,39 @@ $categories = $cc->listecategorie();
 $offers = $oc->listeoffre();
 
 if (isset($_POST['update'])) {
-    $id_offre = $_POST['id_offre'] ?? $application['id_offre'];
-    $status = $_POST['status'] ?? $application['status'];
+  $id_offre = $_POST['id_offre'] ?? $application['id_offre'];
+  $status = $_POST['status'] ?? $application['status'];
+  $full_name = $_POST['full_name'] ?? $application['full_name'];
+  $email = $_POST['email'] ?? $application['email'];
+  $phone = $_POST['phone'] ?? $application['phone'];
 
-    // Handle CV upload if a new file is provided
-    $cvFile = $application['cv']; // keep existing by default
-    if (isset($_FILES['cv']) && $_FILES['cv']['error'] == 0) {
-        $uploadDir = '../../../uploads/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-        $cvFile = $uploadDir . basename($_FILES['cv']['name']);
-        move_uploaded_file($_FILES['cv']['tmp_name'], $cvFile);
+  // Handle CV upload if a new file is provided
+  $cvFile = $application['cv']; // keep existing by default
+  if (isset($_FILES['cv']) && $_FILES['cv']['error'] == 0) {
+    $uploadDir = '../../../uploads/';
+    if (!is_dir($uploadDir))
+      mkdir($uploadDir, 0777, true);
+
+    $fileName = time() . '_' . basename($_FILES['cv']['name']);
+    if (move_uploaded_file($_FILES['cv']['tmp_name'], $uploadDir . $fileName)) {
+      $cvFile = $fileName; // Store only filename
     }
+  }
 
-    // Create new Application object with updated data
-    $updatedApp = new Application(
-        (int)$id_offre,
-        $status,
-        $cvFile,
-        (int)$id
-    );
+  // Create new Application object with updated data
+  $updatedApp = new Application(
+    (int) $id_offre,
+    $status,
+    $cvFile,
+    $full_name,
+    $email,
+    $phone,
+    (int) $id
+  );
 
-    $ac->updateApplication($updatedApp); // you need to add this method
-    header("Location: listeapplication.php");
-    exit;
+  $ac->updateApplication($updatedApp);
+  header("Location: listeapplication.php");
+  exit;
 }
 
 include 'header.php';
@@ -57,40 +67,119 @@ include 'sidebar.php';
           <h2>Update Application</h2>
         </div>
         <div class="card-body">
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data" id="updateAppForm" novalidate
+            onsubmit="return validateForm()">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Full Name:</label>
+                  <input type="text" name="full_name" id="full_name" class="form-control"
+                    value="<?= htmlspecialchars($application['full_name'] ?? '') ?>">
+                  <small id="err_full_name" class="text-danger"></small>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Email:</label>
+              <input type="text" name="email" id="email" class="form-control"
+                value="<?= htmlspecialchars($application['email'] ?? '') ?>">
+              <small id="err_email" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Phone:</label>
+              <input type="text" name="phone" id="phone" class="form-control"
+                value="<?= htmlspecialchars($application['phone'] ?? '') ?>">
+              <small id="err_phone" class="text-danger"></small>
+            </div>
 
             <div class="form-group">
               <label>Offer:</label>
-              <select name="id_offre" class="form-control" required>
+              <select name="id_offre" id="id_offre" class="form-control">
                 <option value="">-- Select Offer --</option>
-                <?php foreach($offers as $offer): ?>
-                    <option value="<?= $offer['id'] ?>" 
-                        <?= $application['id_offre']==$offer['id']?'selected':'' ?>>
-                        <?= htmlspecialchars($offer['titre']) ?>
-                    </option>
+                <?php foreach ($offers as $offer): ?>
+                  <option value="<?= $offer['id'] ?>" <?= $application['id_offre'] == $offer['id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($offer['titre']) ?>
+                  </option>
                 <?php endforeach; ?>
               </select>
+              <small id="err_id_offre" class="text-danger"></small>
             </div>
 
             <div class="form-group">
               <label>Status:</label>
-              <select name="status" class="form-control" required>
-                <option value="Pending" <?= $application['status']=='Pending'?'selected':'' ?>>Pending</option>
-                <option value="Accepted" <?= $application['status']=='Accepted'?'selected':'' ?>>Accepted</option>
-                <option value="Rejected" <?= $application['status']=='Rejected'?'selected':'' ?>>Rejected</option>
+              <select name="status" class="form-control">
+                <option value="Pending" <?= $application['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
+                <option value="Accepted" <?= $application['status'] == 'Accepted' ? 'selected' : '' ?>>Accepted</option>
+                <option value="Rejected" <?= $application['status'] == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
               </select>
             </div>
 
             <div class="form-group">
               <label>CV (optional):</label>
               <input type="file" name="cv" class="form-control">
-              <?php if($application['cv']): ?>
-                <small>Current CV: <?= htmlspecialchars(basename($application['cv'])) ?></small>
+              <?php if ($application['cv'] && $application['cv'] != 'default.pdf'):
+                $curCvLink = '../../../uploads/' . basename($application['cv']);
+                ?>
+                <small>Current CV: <a href="<?= $curCvLink ?>"
+                    target="_blank"><?= htmlspecialchars(basename($application['cv'])) ?></a></small>
               <?php endif; ?>
             </div>
 
             <button type="submit" name="update" class="btn btn-primary">Update Application</button>
           </form>
+
+          <script>
+            function validateForm() {
+              let valid = true;
+
+              // Clear errors
+              document.getElementById('err_full_name').innerHTML = '';
+              document.getElementById('err_email').innerHTML = '';
+              document.getElementById('err_phone').innerHTML = '';
+              document.getElementById('err_id_offre').innerHTML = '';
+
+              // Get values
+              const fullName = document.getElementById('full_name').value.trim();
+              const email = document.getElementById('email').value.trim();
+              const phone = document.getElementById('phone').value.trim();
+              const offer = document.getElementById('id_offre').value;
+
+              // Regex
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              const phoneRegex = /^[0-9]{8,}$/; // At least 8 digits
+
+              if (fullName === '') {
+                document.getElementById('err_full_name').innerHTML = 'Full Name is required';
+                valid = false;
+              }
+
+              if (email === '') {
+                document.getElementById('err_email').innerHTML = 'Email is required';
+                valid = false;
+              } else if (!emailRegex.test(email)) {
+                document.getElementById('err_email').innerHTML = 'Invalid email format';
+                valid = false;
+              }
+
+              if (phone === '') {
+                document.getElementById('err_phone').innerHTML = 'Phone is required';
+                valid = false;
+              } else if (!phoneRegex.test(phone)) {
+                document.getElementById('err_phone').innerHTML = 'Phone must be at least 8 digits';
+                valid = false;
+              }
+
+              if (offer === '') {
+                document.getElementById('err_id_offre').innerHTML = 'Please select an offer';
+                valid = false;
+              }
+
+              return valid;
+            }
+          </script>
         </div>
       </div>
 

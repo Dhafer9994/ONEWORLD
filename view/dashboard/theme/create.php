@@ -1,6 +1,6 @@
-<?php 
+<?php
 include '../../../controller/offreC.php';
-include '../../../model/offre.php';      
+include '../../../model/offre.php';
 include '../../../controller/categorieC.php';
 
 $activeMenu = 'offers';
@@ -10,20 +10,29 @@ $oc = new Offrec();
 $categoriec = new categorieC();
 $listeCategories = $categoriec->listecategorie(); // récupère les catégories depuis la DB
 
-if(isset($_POST['add'])) {
-    // créer un objet offre avec id_categorie
-    $offre = new offre(
-        $_POST['titre'],
-        $_POST['categorie'], // ici c'est id_categorie
-        $_POST['description'],
-        $_POST['location'],
-        $_POST['status'],
-        $_POST['auteur']
-    );
+if (isset($_POST['add'])) {
+  // Handle Image Upload
+  $image = null;
+  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $uploadDir = '../../../view/frontoffice/img/';
+    $image = time() . '_' . basename($_FILES['image']['name']);
+    move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image);
+  }
 
-    $oc->addOffre($offre);
-    header("Location: offers.php");
-    exit;
+  // créer un objet offre avec id_categorie
+  $offre = new offre(
+    $_POST['titre'],
+    $_POST['categorie'], // ici c'est id_categorie
+    $_POST['description'],
+    $_POST['location'],
+    $_POST['status'],
+    $_POST['auteur'],
+    $image
+  );
+
+  $oc->addOffre($offre);
+  header("Location: offers.php");
+  exit;
 }
 
 include 'header.php';
@@ -34,9 +43,11 @@ include 'sidebar.php';
   <div class="content-wrapper">
     <div class="content">
       <div class="card card-default">
-        <div class="card-header"><h2>Create Offer</h2></div>
+        <div class="card-header">
+          <h2>Create Offer</h2>
+        </div>
         <div class="card-body">
-          <form method="POST" onsubmit="return validateCreateForm();">
+          <form method="POST" enctype="multipart/form-data" onsubmit="return validateCreateForm();">
 
             <!-- Sélection dynamique des catégories -->
             <div class="form-group">
@@ -44,12 +55,12 @@ include 'sidebar.php';
               <select name="categorie" id="categorie" class="form-control">
                 <option value="">-- Select Category --</option>
                 <?php
-                if(!empty($listeCategories)) {
-                    foreach($listeCategories as $cat){
-                        echo '<option value="'.$cat['id'].'">'.$cat['nom'].'</option>';
-                    }
+                if (!empty($listeCategories)) {
+                  foreach ($listeCategories as $cat) {
+                    echo '<option value="' . $cat['id'] . '">' . $cat['nom'] . '</option>';
+                  }
                 } else {
-                    echo '<option value="">No categories found</option>';
+                  echo '<option value="">No categories found</option>';
                 }
                 ?>
               </select>
@@ -66,6 +77,11 @@ include 'sidebar.php';
               <label>Description:</label>
               <textarea id="description" name="description" class="form-control"></textarea>
               <small id="err_description" class="text-danger"></small>
+            </div>
+
+            <div class="form-group">
+              <label>Image (Optional):</label>
+              <input type="file" name="image" class="form-control">
             </div>
 
             <div class="form-group">
@@ -98,7 +114,7 @@ include 'sidebar.php';
 </div>
 
 <script>
-function validateCreateForm() {
+  function validateCreateForm() {
     document.querySelectorAll(".text-danger").forEach(el => el.innerHTML = "");
     let valid = true;
 
@@ -110,29 +126,29 @@ function validateCreateForm() {
     const auteur = document.getElementById("auteur").value;
 
     if (!categorie) {
-        document.getElementById("err_categorie").innerHTML = "Please choose a category.";
-        valid = false;
+      document.getElementById("err_categorie").innerHTML = "Please choose a category.";
+      valid = false;
     }
     if (titre === "") {
-        document.getElementById("err_titre").innerHTML = "Title cannot be empty.";
-        valid = false;
+      document.getElementById("err_titre").innerHTML = "Title cannot be empty.";
+      valid = false;
     }
     if (description === "") {
-        document.getElementById("err_description").innerHTML = "Description cannot be empty.";
-        valid = false;
+      document.getElementById("err_description").innerHTML = "Description cannot be empty.";
+      valid = false;
     }
     if (location === "") {
-        document.getElementById("err_location").innerHTML = "Location cannot be empty.";
-        valid = false;
+      document.getElementById("err_location").innerHTML = "Location cannot be empty.";
+      valid = false;
     }
     if (!status) {
-        document.getElementById("err_status").innerHTML = "Please choose a status.";
-        valid = false;
+      document.getElementById("err_status").innerHTML = "Please choose a status.";
+      valid = false;
     }
     if (auteur === "") {
-        document.getElementById("err_auteur").innerHTML = "Author cannot be empty.";
-        valid = false;
+      document.getElementById("err_auteur").innerHTML = "Author cannot be empty.";
+      valid = false;
     }
-    return valid; 
-}
+    return valid;
+  }
 </script>

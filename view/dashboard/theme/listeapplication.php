@@ -19,74 +19,94 @@ if (isset($_GET['delete'])) {
 }
 
 $liste = $ac->listApplications();
+
+include "header.php";
+include "sidebar.php";
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<title>Application Management - OneWorld</title>
-<?php include "header.php"; ?>
-</head>
-<body class="header-fixed sidebar-fixed sidebar-dark header-light">
+<div class="page-wrapper">
+    <div class="content-wrapper">
+        <div class="content">
 
-<div class="wrapper">
+            <div class="card card-default">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>Application Management</h2>
+                    <a href="createapplication.php" class="btn btn-primary">
+                        <i class="mdi mdi-plus"></i> New Application
+                    </a>
+                </div>
 
-    <?php include "sidebar.php"; ?>
-
-    <div class="page-wrapper">
-        <div class="content-wrapper">
-            <div class="content">
-
-                <div class="card card-default">
-                    <div class="card-header d-flex justify-content-between">
-                        <h2>Application Management</h2>
-                        <a href="createapplication.php" class="btn btn-primary">
-                            <i class="mdi mdi-plus"></i> New Application
-                        </a>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search applications...">
                     </div>
+                    <table class="table table-hover" id="applicationTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Applicant</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Offer</th>
+                                <th>Category</th>
+                                <th>CV</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($liste && count($liste) > 0): ?>
+                                <?php foreach ($liste as $app):
+                                    // Data is now fetched via JOIN in ApplicationC
+                                    $offerTitle = $app['offre_titre'] ?? 'Unknown Offer';
+                                    $categoryName = $app['categorie_nom'] ?? 'N/A';
+                                    $statusValue = $app['status'];
 
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Offer</th>
-                                    <th>Category</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if($liste && count($liste) > 0): ?>
-                                    <?php foreach ($liste as $app):
-                                        // Récupérer l'offre
-                                        $offer = $oc->getOffreById($app['id_offre']);
-                                        $offerTitle = $offer ? $offer['titre'] : 'Unknown Offer';
+                                    // Determine Status Text
+                                    $statusText = 'Pending';
+                                    if (is_numeric($statusValue)) {
+                                        $statusMap = [0 => 'Pending', 1 => 'Accepted', 2 => 'Rejected'];
+                                        $statusText = $statusMap[$statusValue] ?? 'Pending';
+                                    } else {
+                                        $statusText = $statusValue;
+                                    }
 
-                                        // Récupérer la catégorie
-                                        $categoryName = 'Unknown Category';
-                                        if ($offer && isset($offer['id_categorie'])) {
-                                            $category = $cc->getCategorieById($offer['id_categorie']);
-                                            $categoryName = $category ? $category['nom'] : 'Unknown Category';
-                                        }
+                                    // Applicant Name
+                                    $applicantName = htmlspecialchars($app['full_name'] ?? 'N/A');
+                                    $email = $app['email'] ?? 'N/A';
+                                    $phone = $app['phone'] ?? 'N/A';
 
-                                        // Déterminer le texte du statut
-                                        $statusValue = $app['status'];
-                                        $statusText = is_numeric($statusValue) ? 
-                                            [0=>'Pending',1=>'Accepted',2=>'Rejected'][$statusValue] ?? 'Pending'
-                                            : $statusValue;
+                                    // CV Link
+                                    $cvPath = (!empty($app['cv']) && $app['cv'] !== 'default.pdf') ? $app['cv'] : null;
+                                    $cvLink = '#';
+                                    $cvLabel = 'No CV';
+                                    if ($cvPath) {
+                                        $cvLink = '../../../uploads/' . $cvPath;
+                                        $cvLabel = '<i class="mdi mdi-download"></i> Download';
+                                    }
                                     ?>
                                     <tr>
                                         <td><?= $app['id'] ?></td>
-                                        <td>Dhafer (ID: 999)</td>
+                                        <td><?= htmlspecialchars($applicantName) ?></td>
+                                        <td><?= htmlspecialchars($email) ?></td>
+                                        <td><?= htmlspecialchars($phone) ?></td>
                                         <td><?= htmlspecialchars($offerTitle) ?></td>
                                         <td><?= htmlspecialchars($categoryName) ?></td>
+                                        <td>
+                                            <?php if ($cvPath): ?>
+                                                <a href="<?= htmlspecialchars($cvLink) ?>" target="_blank"
+                                                    class="btn btn-sm btn-info">
+                                                    <?= $cvLabel ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <span class="text-muted">No CV</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= $app['date_postulation'] ?></td>
                                         <td>
-                                            <span class="badge <?= $statusText=='Accepted'?'bg-success':($statusText=='Rejected'?'bg-danger':'bg-warning') ?>">
+                                            <span
+                                                class="badge <?= $statusText == 'Accepted' ? 'bg-success' : ($statusText == 'Rejected' ? 'bg-danger' : 'bg-warning') ?>">
                                                 <?= htmlspecialchars($statusText) ?>
                                             </span>
                                         </td>
@@ -99,62 +119,68 @@ $liste = $ac->listApplications();
                                             </button>
                                         </td>
                                     </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr><td colspan="7">No applications found</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="10">No applications found</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
 
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fix slow loading bar by completing NProgress
+    window.onload = function () {
+        if (typeof NProgress !== 'undefined') {
+            NProgress.done();
+        }
+    };
+</script>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this application?
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Delete -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete Application</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this application?
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Delete</a>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
 <script src="assets/plugins/jquery/jquery.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-$(document).ready(function() {
-    var deleteModalEl = document.getElementById('deleteModal');
-    var deleteModal = new bootstrap.Modal(deleteModalEl);
+    $(document).ready(function () {
+        $('.deleteBtn').on('click', function (e) {
+            e.preventDefault();
+            var appId = $(this).data('id');
+            $('#confirmDeleteBtn').attr('href', 'listeapplication.php?delete=' + appId);
+            $('#deleteModal').modal('show');
+        });
 
-    $('.deleteBtn').on('click', function() {
-        var appId = $(this).data('id');
-        $('#confirmDeleteBtn').attr('href', 'listeapplication.php?delete=' + appId);
-        deleteModal.show();
+        // Search functionality
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#applicationTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
     });
-
-    // Optional: reset href when modal is hidden
-    deleteModalEl.addEventListener('hidden.bs.modal', function () {
-        $('#confirmDeleteBtn').attr('href', '#');
-    });
-});
 </script>
-
-
-</body>
-</html>

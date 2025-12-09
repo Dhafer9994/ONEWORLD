@@ -1,21 +1,33 @@
-<?php 
+<?php
 include '../../../controller/categorieC.php';
-include '../../../model/categorie.php';  
+include '../../../model/categorie.php';
 
 $categoriec = new categorieC();
 $activeMenu = 'categories';   // pour ouvrir le menu Catégories
 $activePage = 'listecategorie';   // pour marquer la page active
 
-if(isset($_POST['add'])) {
-    $categorie = new categorie(
-        $_POST['name'],
-        $_POST['description']
-    );
+if (isset($_POST['add'])) {
+  // Handle Image Upload
+  $image = null;
+  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $uploadDir = '../../frontoffice/img/';
+    if (!is_dir($uploadDir)) {
+      mkdir($uploadDir, 0777, true);
+    }
+    $image = time() . '_' . basename($_FILES['image']['name']);
+    move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image);
+  }
 
-    $categoriec->addcategorie($categorie);
+  $categorie = new categorie(
+    $_POST['name'],
+    $_POST['description'],
+    $image
+  );
 
-    header("Location: listecategorie.php");  // redirection vers la page liste catégories
-    exit;
+  $categoriec->addcategorie($categorie);
+
+  header("Location: listecategorie.php");
+  exit;
 }
 
 include 'header.php';
@@ -31,7 +43,7 @@ include 'sidebar.php';
         </div>
 
         <div class="card-body">
-          <form method="POST" onsubmit="return validateCategoryForm();">
+          <form method="POST" enctype="multipart/form-data" onsubmit="return validateCategoryForm();">
 
             <div class="form-group">
               <label>Name:</label>
@@ -45,6 +57,11 @@ include 'sidebar.php';
               <small id="err_description" class="text-danger"></small>
             </div>
 
+            <div class="form-group">
+              <label>Image (Optional):</label>
+              <input type="file" name="image" class="form-control">
+            </div>
+
             <button type="submit" name="add" class="btn btn-primary">Create Category</button>
           </form>
         </div>
@@ -55,7 +72,7 @@ include 'sidebar.php';
   </div>
 </div>
 <script>
-function validateCategoryForm() {
+  function validateCategoryForm() {
 
     // Clear previous errors
     document.getElementById("err_name").innerHTML = "";
@@ -67,15 +84,15 @@ function validateCategoryForm() {
     const description = document.getElementById("description").value;
 
     if (!name) {
-        document.getElementById("err_name").innerHTML = "Name cannot be empty.";
-        valid = false;
+      document.getElementById("err_name").innerHTML = "Name cannot be empty.";
+      valid = false;
     }
 
     if (!description) {
-        document.getElementById("err_description").innerHTML = "Description cannot be empty.";
-        valid = false;
+      document.getElementById("err_description").innerHTML = "Description cannot be empty.";
+      valid = false;
     }
 
     return valid; // false blocks form submission
-}
+  }
 </script>

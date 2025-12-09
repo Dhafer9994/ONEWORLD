@@ -1,220 +1,325 @@
-<?php 
+<?php
 include 'header.php';
 include '../../controller/categorieC.php';
 
-$cc = new categorieC();
-$liste = $cc->listecategorie();
+$categorieC = new categorieC();
+$listecategorie = $categorieC->listecategorie()->fetchAll();
 ?>
 
 <style>
+:root {
+    --primary-color: #5BB12F;       
+    --primary-dark: #4a9e25;
+    --primary-light: #7bc954;
+    --secondary-color: #333333;
+    --bg-light: #f9f9f9;
+    --text-dark: #333333;
+    --text-muted: #666666;
+    --white: #ffffff;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
 body {
-    padding-top: 80px !important;
+    background-color: var(--white);
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-dark);
 }
 
-/* Couleurs */
-.bg-primary-subtle { background-color: rgba(67, 97, 238, 0.1) !important; --card-color: #4361ee; --card-color-light: #667eea; }
-.bg-success-subtle { background-color: rgba(6, 214, 160, 0.1) !important; --card-color: #06d6a0; --card-color-light: #0ce9b8; }
-.bg-warning-subtle { background-color: rgba(255, 209, 102, 0.1) !important; --card-color: #ffd166; --card-color-light: #ffde8a; }
-.bg-info-subtle { background-color: rgba(17, 138, 178, 0.1) !important; --card-color: #118ab2; --card-color-light: #15a0d1; }
-.bg-danger-subtle { background-color: rgba(239, 71, 111, 0.1) !important; --card-color: #ef476f; --card-color-light: #f56c8d; }
-.bg-purple-subtle { background-color: rgba(114, 9, 183, 0.1) !important; --card-color: #7209b7; --card-color-light: #8a1bd9; }
-.bg-indigo-subtle { background-color: rgba(58, 12, 163, 0.1) !important; --card-color: #3a0ca3; --card-color-light: #4a11cc; }
-.bg-teal-subtle { background-color: rgba(13, 148, 136, 0.1) !important; --card-color: #0d9488; --card-color-light: #10b3a4; }
+/* Page Header */
+.page-title-section {
+    padding: 100px 0 60px;
+    background-color: #f4f6f8;
+    text-align: center;
+    margin-bottom: 60px;
+     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/header-bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+.page-title-section.no-img {
+    background: linear-gradient(135deg, #333 0%, #5BB12F 100%);
+}
 
-/* Cartes */
-.category-card-wrapper {
+
+.page-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: #eee;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Search Bar */
+.search-container {
+    margin-top: -30px;
+    margin-bottom: 50px;
     position: relative;
-    height: 100%;
-    margin-bottom: 0.75rem;
-    animation: fadeInUp 0.4s ease forwards;
-    opacity: 0;
+    z-index: 10;
 }
 
+.search-input-wrapper {
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-soft);
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    border: 1px solid #eaeaea;
+}
+
+.search-input-wrapper i {
+    color: var(--primary-color);
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+.search-input {
+    border: none;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+/* Category Cards */
 .category-card {
-    border-radius: 12px;
-    transition: all 0.3s ease;
+    background: white;
+    border-radius: 3px; 
     overflow: hidden;
-    height: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: all 0.4s ease;
+    border: 1px solid #f0f0f0;
+    position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    background: white;
-    position: relative;
+    height: 100%;
 }
 
 .category-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12) !important;
-    border-color: #4361ee;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(91, 177, 47, 0.15); /* Greenish shadow */
+    border-color: var(--primary-light);
 }
 
-.category-card .card-body {
-    padding: 1rem;
+.category-img {
+    height: 160px;
+    background-color: #f9f9f9;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.category-img-placeholder {
+     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--primary-color);
+    font-size: 36px;
+    opacity: 0.2;
+}
+
+
+.category-content {
+    padding: 25px;
+    text-align: center;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
 }
 
-.icon-circle {
+/* Icon Bubble (Optional overlaid on image or top of content) */
+.category-icon {
     width: 60px;
     height: 60px;
+    background: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--card-color-light), var(--card-color));
+    margin: -55px auto 15px; /* Pull up into image area */
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    color: var(--primary-color);
+    font-size: 24px;
+    transition: all 0.3s;
+}
+
+.category-card:hover .category-icon {
+    background: var(--primary-color);
     color: white;
-    font-size: 1.8rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: scale(1.1);
 }
 
 .category-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.3;
-    min-height: 2.5rem;
-    text-align: center;
-    margin: 0.3rem 0;
-}
-
-.category-indicator .badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
     font-weight: 500;
-    font-size: 0.75rem;
-    margin: 0.25rem 0;
-    padding: 0.25rem 0.75rem;
-    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    text-transform: uppercase;
 }
 
-.category-card:hover .category-indicator .badge {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.category-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.card-footer {
-    margin-top: auto;
-    padding: 0.5rem 1rem;
-    background: rgba(248,249,250,0.3);
-    border-top: 1px solid #f0f0f0;
-}
-
-.card-footer a {
-    transition: all 0.3s ease;
+.btn-explore {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    text-decoration: none;
+    border: 1px solid var(--primary-color);
+    padding: 8px 20px;
+    border-radius: 3px;
     display: inline-block;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
 }
 
-.card-footer a:hover {
-    color: #4361ee !important;
-    transform: translateX(3px);
-    background: rgba(67,97,238,0.05);
-    text-decoration: none !important;
+.btn-explore:hover {
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
 }
 
-/* Empty state */
-.empty-state-container {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 1rem;
-    text-align: center;
-}
-
-.border-dashed { border-style: dashed !important; border-color: #dee2e6 !important; border-width: 2px !important; }
-.empty-state-icon { opacity: 0.5; margin-bottom: 1rem; font-size: 3rem; }
-
-/* Animation */
+/* Animations */
 @keyframes fadeInUp {
-    from { opacity:0; transform: translateY(15px); }
-    to { opacity:1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .icon-circle { width:50px; height:50px; font-size:1.5rem; }
-    .category-title { font-size:1rem; min-height:2.2rem; }
-    .category-card { min-height:160px; }
+.category-item {
+    opacity: 0; /* Hidden by default for animation */
+    animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-@media (max-width: 576px) {
-    .col-md-6 { width:50%; }
-    .category-card { min-height:150px; }
-}
 </style>
 
-<div class="container mt-4">
-    <h1 class="mb-4 fw-bold">Categories</h1>
+<!-- Hero / Page Title -->
+<div class="page-title-section no-img">
+    <div class="container">
+        <h1 class="page-title">Explore Categories</h1>
+        <p class="page-subtitle"> OneWorld Connecting lives, building peace</p>
+    </div>
+</div>
 
-    <?php if($liste): ?>
-        <div class="row g-3">
-            <?php 
-            $colors = ['primary','success','warning','info','danger','purple','indigo','teal'];
-            foreach($liste as $index => $cat): 
-                $color = $colors[$index % count($colors)];
-            ?>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="category-card-wrapper">
-                        <div class="category-card">
-                            <a href="viewoffers.php?category=<?= $cat['id'] ?>" class="stretched-link"></a>
-                            <div class="card-body">
-                                <div class="icon-circle bg-<?= $color ?>-subtle">
-                                    <i class="mdi mdi-tag-multiple"></i>
-                                </div>
-                                <h4 class="category-title"><?= htmlspecialchars($cat['nom']) ?></h4>
-                                <div class="category-indicator">
-                                    <span class="badge bg-<?= $color ?>-subtle text-<?= $color ?>">Category</span>
-                                </div>
+<div class="container" style="padding-bottom: 80px;">
+    
+    <!-- Search Filter -->
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <i class="fa fa-search"></i>
+            <input type="text" id="categorySearch" class="search-input" placeholder="Search for a category (e.g. IT, Marketing)..." onkeyup="filterCategories()">
+        </div>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="row" id="categoriesGrid">
+        <?php 
+        if(count($listecategorie) > 0) {
+            $delay = 0;
+            foreach ($listecategorie as $cat) {
+                // Stagger animations
+                $delay += 0.1;
+                $catImg = !empty($cat['image']) ? $cat['image'] : null;
+        ?>
+            <div class="col-md-4 col-sm-6 category-item" style="animation-delay: <?php echo $delay; ?>s;">
+                <div class="category-card">
+                    <!-- Image Area -->
+                     <div class="category-img" style="<?php echo $catImg ? "background-image: url('img/" . $catImg . "');" : ""; ?>">
+                        <?php if(!$catImg): ?>
+                            <div class="category-img-placeholder">
+                                <i class="fa fa-picture-o"></i>
                             </div>
-                            <div class="card-footer text-center">
-                                <a href="viewoffers.php?category=<?= $cat['id'] ?>">
-                                    <i class="mdi mdi-eye-outline me-1"></i> See Offers
-                                </a>
-                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="category-icon">
+                        <i class="fa fa-folder-open-o"></i>
+                    </div>
+
+                    <div class="category-content">
+                        <div>
+                            <h3 class="category-title"><?php echo htmlspecialchars($cat['nom']); ?></h3>
+                            <p class="category-desc">
+                                <?php echo htmlspecialchars($cat['description']); ?>
+                            </p>
+                        </div>
+                        <div>
+                            <a href="viewoffers.php?category=<?php echo $cat['id']; ?>" class="btn-explore">
+                                View Offers <i class="fa fa-angle-right" style="margin-left:5px;"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <div class="empty-state-container">
-            <div class="card border-dashed shadow-none">
-                <div class="card-body">
-                    <div class="empty-state-icon"><i class="mdi mdi-tag-off-outline"></i></div>
-                    <h5 class="text-muted fw-normal">No Categories</h5>
-                    <p class="text-muted">Start by creating your first category</p>
-                    <a href="addcategorie.php" class="btn btn-primary rounded-pill px-3">
-                        <i class="mdi mdi-plus-circle-outline me-2"></i> Create Category
-                    </a>
-                </div>
             </div>
-        </div>
-    <?php endif; ?>
+        <?php 
+            }
+        } else {
+        ?>
+            <div class="col-xs-12 text-center" style="padding: 40px; color: #999;">
+                <i class="fa fa-folder-o" style="font-size: 48px; margin-bottom: 20px;"></i>
+                <p>No categories found.</p>
+            </div>
+        <?php } ?>
+    </div>
+
 </div>
 
+
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.category-card');
-    const wrappers = document.querySelectorAll('.category-card-wrapper');
+function filterCategories() {
+    var input, filter, grid, items, title, i, txtValue;
+    input = document.getElementById('categorySearch');
+    filter = input.value.toUpperCase();
+    grid = document.getElementById("categoriesGrid");
+    items = grid.getElementsByClassName('category-item');
 
-    wrappers.forEach((wrapper, index) => { wrapper.style.animationDelay = (index*0.08)+'s'; });
-
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            const icon = this.querySelector('.icon-circle');
-            const badge = this.querySelector('.category-indicator .badge');
-            if(icon) { icon.style.transform='scale(1.08)'; icon.style.boxShadow='0 4px 15px rgba(0,0,0,0.15)'; }
-            if(badge) { badge.style.transform='translateY(-1px)'; badge.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'; }
-        });
-        card.addEventListener('mouseleave', function() {
-            const icon = this.querySelector('.icon-circle');
-            const badge = this.querySelector('.category-indicator .badge');
-            if(icon) { icon.style.transform='scale(1)'; icon.style.boxShadow='none'; }
-            if(badge) { badge.style.transform='translateY(0)'; badge.style.boxShadow='none'; }
-        });
-    });
-});
+    for (i = 0; i < items.length; i++) {
+        title = items[i].getElementsByClassName("category-title")[0];
+        if (title) {
+            txtValue = title.textContent || title.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                items[i].style.display = "";
+            } else {
+                items[i].style.display = "none";
+            }
+        }       
+    }
+}
 </script>
+
+</body>
+</html>
