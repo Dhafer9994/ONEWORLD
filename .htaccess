@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteBase /projetweb/
+
+# Redirect to frontend by default
+RewriteRule ^$ front/ [L]
+
+# Admin area
+RewriteRule ^admin/(.*)$ admin/index.php?page=$1 [QSA,L]
+
+# Front area
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ front/index.php?page=$1 [QSA,L]
+
+# Security: deny access to sensitive directories
+RewriteRule ^(models|controllers|logs)/ - [F,L]
+RewriteRule ^\.htpasswd$ - [F,L]
+
+# Disable directory browsing
+Options -Indexes
+
+# Set UTF-8 encoding
+AddDefaultCharset UTF-8
