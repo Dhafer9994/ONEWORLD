@@ -1,23 +1,23 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['facebook_data'])) {
+
+if (!isset($_SESSION['google_data'])) {
     header("Location: login.php");
     exit();
 }
 
-$facebook_data = $_SESSION['facebook_data'];
+$google_data = $_SESSION['google_data'];
 $error = null;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
-    $email = $_POST['email'] ?? '';
     $telephone = $_POST['telephone'] ?? '';
     $adresse = $_POST['adresse'] ?? '';
     
-  
+    
     $photo = "";
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
@@ -35,48 +35,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    if (empty($email)) {
-        $error = "Email is required";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format";
-    } elseif (empty($password)) {
+    if (empty($password)) {
         $error = "Password is required";
     } elseif (strlen($password) < 8) {
         $error = "Password must be at least 8 characters";
     } elseif ($password !== $confirm_password) {
         $error = "Passwords do not match";
     } else {
-      
-        require_once '../controller/AuthController.php';
+       
+        require_once '../../controller/AuthController.php';
         $auth = new AuthController();
         
         $userData = [
-            'nom' => $facebook_data['nom'],
-            'prenom' => $facebook_data['prenom'],
-            'email' => $email,
+            'nom' => $google_data['nom'],
+            'prenom' => $google_data['prenom'],
+            'email' => $google_data['email'],
             'mdp' => $password,
             'photo' => $photo,
             'telephone' => $telephone,
             'adresse' => $adresse,
-            'facebook_id' => $facebook_data['facebook_id']
+            'google_id' => $google_data['google_id']
         ];
         
         $auth->register($userData);
         
+       
         $pdo = config::getConnexion();
-        $stmt = $pdo->prepare("SELECT * FROM user WHERE facebook_id = :facebook_id");
-        $stmt->execute(['facebook_id' => $facebook_data['facebook_id']]);
+        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt->execute(['email' => $google_data['email']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($user) {
             $_SESSION['user'] = $user;
-            unset($_SESSION['facebook_data']);
+            unset($_SESSION['google_data']);
             
             $hist = new HistoriqueC();
             $h = new Historique("Connexion", date('Y-m-d H:i:s'), $user['id']);
             $hist->addHistorique($h);
             
-            header("Location: " . ($user['role'] === 'admin' ? 'profile.php' : 'profil.php'));
+            header("Location: " . ($user['role'] === 'admin' ? '../dashboard/profile.php' : '../dashboard/profil.php'));
             exit();
         }
     }
@@ -91,12 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Complete Your Signup - OneWorld</title>
 
-    <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-    <link href="../css/responsive.css" rel="stylesheet">
-    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href="../../asset/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/responsive.css" rel="stylesheet">
+    <link href="../../css/modern-green.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
@@ -122,8 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cursor: pointer;
         }
         
-        .facebook-badge {
-            background: #3b5998;
+        .google-badge {
+            background: #4285f4;
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
@@ -132,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 14px;
         }
         
-        .facebook-badge i {
+        .google-badge i {
             margin-right: 8px;
         }
     </style>
@@ -144,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header page-scroll">
-                <a class="navbar-brand page-scroll" href="../index.php">
-                    <img src="../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                <a class="navbar-brand page-scroll" href="../../index.php">
+                    <img src="../../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
                     OneWorld
                 </a>
             </div>
@@ -157,8 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <div class="page-title">Complete Your Signup</div>
             <div class="page-subtitle">
-                <span class="facebook-badge">
-                    <i class="fa fa-facebook"></i> Signing up with Facebook
+                <span class="google-badge">
+                    <i class="fa fa-google"></i> Signing up with Google
                 </span>
             </div>
         </div>
@@ -178,14 +175,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     <div class="offer-card">
                         <div class="card-body">
-                            <div class="offer-title">Welcome, <?php echo htmlspecialchars($facebook_data['prenom']); ?>!</div>
+                            <div class="offer-title">Welcome, <?php echo htmlspecialchars($google_data['prenom']); ?>!</div>
                             <p class="text-muted" style="margin-bottom: 30px;">Complete your account setup by providing the information below</p>
                             
                             <div class="row" style="margin-bottom: 20px;">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="info-item">
                                         <div class="info-label">Name</div>
-                                        <div class="info-value"><?php echo htmlspecialchars($facebook_data['prenom'] . ' ' . $facebook_data['nom']); ?></div>
+                                        <div class="info-value"><?php echo htmlspecialchars($google_data['prenom'] . ' ' . $google_data['nom']); ?></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <div class="info-label">Email</div>
+                                        <div class="info-value"><?php echo htmlspecialchars($google_data['email']); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -196,29 +199,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="form-group text-center" style="margin-bottom: 30px;">
                                     <label>Profile Photo</label>
                                     <div style="margin: 15px 0;">
-                                        <img id="photoPreview" src="../images/default-avatar.png" alt="Preview" class="profile-avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                                        <img id="photoPreview" src="../../images/default-avatar.png" alt="Preview" class="profile-avatar" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
                                     </div>
                                     <input type="file" id="photo" name="photo" accept="image/*" style="display: none;" onchange="previewPhoto(event)">
                                     <label for="photo" class="btn btn-default">
                                         <i class="fa fa-camera"></i> Choose Photo
                                     </label>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="email">Email Address <span class="text-danger">*</span></label>
-                                            <?php if (empty($facebook_data['email'])): ?>
-                                                <small class="form-text text-muted">Facebook didn't share your email. Please enter your email address.</small>
-                                            <?php endif; ?>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="email" 
-                                                   name="email"
-                                                   value="<?php echo htmlspecialchars($facebook_data['email']); ?>"
-                                                   placeholder="Enter your email address">
-                                        </div>
-                                    </div>
                                 </div>
                                 
                                 <div class="row">
@@ -306,9 +292,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../../js/jquery-2.1.1.min.js"></script>
+    <script src="../../asset/js/bootstrap.min.js"></script>
+    <script src="../../js/script.js"></script>
     
     <script>
         function previewPhoto(event) {

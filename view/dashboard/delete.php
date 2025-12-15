@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../controller/UtilisateurController.php';
+include '../../controller/UtilisateurController.php';
 
 if (isset($_GET['id'])) {
     $uc = new UtilisateurController();

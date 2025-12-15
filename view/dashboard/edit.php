@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../controller/UtilisateurController.php';
+include '../../controller/UtilisateurController.php';
 
 $uc = new UtilisateurController();
 
@@ -58,19 +58,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
   
     <!-- PLUGINS CSS STYLE -->
-    <link href="../assets/plugins/simplebar/simplebar.css" rel="stylesheet" />
-    <link href="../assets/plugins/nprogress/nprogress.css" rel="stylesheet" />
+    <link href="../../assets/plugins/simplebar/simplebar.css" rel="stylesheet" />
+    <link href="../../assets/plugins/nprogress/nprogress.css" rel="stylesheet" />
   
     <!-- SLEEK CSS -->
-    <link id="sleek-css" rel="stylesheet" href="../assets/css/sleek.css" />
+    <link id="sleek-css" rel="stylesheet" href="../../assets/css/sleek.css" />
   
     <!-- CUSTOM CSS POUR ONEWORLD -->
-    <link rel="stylesheet" href="../assets/css/oneworld.css">
+    <link rel="stylesheet" href="../../assets/css/oneworld.css">
   
     <!-- FAVICON -->
-    <link href="../assets/img/favicon.png" rel="shortcut icon" />
+    <link href="../../assets/img/favicon.png" rel="shortcut icon" />
   
-    <script src="../assets/plugins/nprogress/nprogress.js"></script>
+    <script src="../../assets/plugins/nprogress/nprogress.js"></script>
 
     <style>
       .header-actions {
@@ -123,11 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="wrapper">
       <!-- Sidebar -->
-      <?php include '../partials/sidebar.php'; ?>
+      <?php include 'partials/sidebar.php'; ?>
 
       <div class="page-wrapper">
         <!-- Header -->
-        <?php include '../partials/header.php'; ?>
+        <?php include 'partials/header.php'; ?>
 
         <div class="content-wrapper">
           <div class="content">
@@ -230,15 +230,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Footer -->
-        <?php include '../partials/footer.php'; ?>
+        <?php include 'partials/footer.php'; ?>
       </div>
     </div>
 
-    <script src="../assets/plugins/jquery/jquery.min.js"></script>
-    <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/plugins/simplebar/simplebar.min.js"></script>
-    <script src="../assets/js/sleek.js"></script>
-    <script src="../assets/js/oneworld.js"></script>
+    <script src="../../assets/plugins/jquery/jquery.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/plugins/simplebar/simplebar.min.js"></script>
+    <script src="../../assets/js/sleek.js"></script>
+    <script src="../../assets/js/oneworld.js"></script>
 
     <script>
       function validateForm(event) {

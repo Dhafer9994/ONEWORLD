@@ -26,18 +26,18 @@
         
         <li class="dropdown user-menu">
           <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-            <img src="../images/eya.png" class="user-image" />
+            <img src="../../images/eya.png" class="user-image" />
             <span class="d-none d-lg-inline-block">eya OneWorld</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li class="dropdown-header">
-              <img src="images/eya.png" class="img-circle" />
+              <img src="../../images/eya.png" class="img-circle" />
               <div class="d-inline-block">
                 eya OneWorld <small>admin@oneworld.com</small>
               </div>
             </li>
-            <li><a href="profile.php"><i class="mdi mdi-account"></i> Mon Profil</a></li>
-            <li class="dropdown-footer"><a href="login.php"><i class="mdi mdi-logout"></i> Déconnexion</a></li>
+            <li><a href="../front-office/profile.php"><i class="mdi mdi-account"></i> Mon Profil</a></li>
+            <li class="dropdown-footer"><a href="../../controller/AuthController.php?action=logout"><i class="mdi mdi-logout"></i> Déconnexion</a></li>
           </ul>
         </li>
       </ul>

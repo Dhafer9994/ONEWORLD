@@ -1,6 +1,6 @@
 <?php
-include '../config.php';
-include '../model/historique.php';
+include __DIR__ . '/../config.php';
+include __DIR__ . '/../model/historique.php';
 
 class HistoriqueC {
 

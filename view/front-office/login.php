@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../controller/AuthController.php';
+include '../../controller/AuthController.php';
 
 $message = '';
 
@@ -21,13 +21,13 @@ if ($_POST && isset($_POST['email']) && isset($_POST['mdp'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneWorld - Login</title>
 
-    <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-    <link href="../css/responsive.css" rel="stylesheet">
+    <link href="../../asset/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/responsive.css" rel="stylesheet">
     <!-- Modern Green CSS -->
-    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href="../../css/modern-green.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
@@ -64,19 +64,19 @@ if ($_POST && isset($_POST['email']) && isset($_POST['mdp'])) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="../index.php">
-                    <img src="../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                <a class="navbar-brand page-scroll" href="../../index.php">
+                    <img src="../../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
                     OneWorld
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../index.php">HOME</a></li>
-                    <li><a href="../index.php#about">About</a></li>
-                    <li><a href="../index.php#contact">Contact</a></li>
-                    <li><a href="../index.php#services">Services</a></li>
-                    <li><a href="../index.php#news">News</a></li>
+                    <li><a href="../../index.php">HOME</a></li>
+                    <li><a href="../../index.php#about">About</a></li>
+                    <li><a href="../../index.php#contact">Contact</a></li>
+                    <li><a href="../../index.php#services">Services</a></li>
+                    <li><a href="../../index.php#news">News</a></li>
                     <li class="active"><a href="login.php">Login</a></li>
                 </ul>
             </div>
@@ -153,9 +153,9 @@ if ($_POST && isset($_POST['email']) && isset($_POST['mdp'])) {
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../../js/jquery-2.1.1.min.js"></script>
+    <script src="../../asset/js/bootstrap.min.js"></script>
+    <script src="../../js/script.js"></script>
 
     <script>
         function validateLogin(event) {

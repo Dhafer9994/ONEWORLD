@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../controller/HistoriqueC.php';
+include '../../controller/HistoriqueC.php';
 
 if (isset($_GET['id'])) {
     $historiqueId = $_GET['id'];

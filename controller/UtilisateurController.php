@@ -1,6 +1,6 @@
 <?php
-include '../config.php';
-include '../model/user.php';
+include __DIR__ . '/../config.php';
+include __DIR__ . '/../model/user.php';
 
 class UtilisateurController {
 

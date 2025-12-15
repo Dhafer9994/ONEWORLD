@@ -6,14 +6,14 @@ $is_history_page = strpos($_SERVER['REQUEST_URI'], 'hist.php') !== false || $cur
 $is_dashboard_page = strpos($_SERVER['REQUEST_URI'], 'dash.php') !== false || $current_page == 'dash.php';
 
 
-$view_path = '../view/';
+$view_path = '';
 ?>
 
 <aside class="left-sidebar bg-sidebar">
   <div id="sidebar" class="sidebar sidebar-with-footer">
     <div class="app-brand">
       <a href="<?php echo $view_path; ?>dash.php" title="OneWorld Dashboard">
-        <img src="../assets/img/logo.png" alt="OneWorld Logo" class="brand-logo">
+        <img src="../../../images/logo.png" alt="OneWorld Logo" class="brand-logo">
         <span class="brand-name">OneWorld</span>
       </a>
     </div>

@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($_FILES['photo']['size'] > $maxSize) {
             $errors[] = "File size must be less than 2MB";
         } else {
-            $uploadDir = '../uploads/';
+            $uploadDir = '../../uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -56,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $uploadPath = $uploadDir . $fileName;
             
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadPath)) {
-                if (!empty($user['photo']) && $user['photo'] !== 'images/default-avatar.png' && file_exists('../' . $user['photo'])) {
-                    unlink('../' . $user['photo']);
+                if (!empty($user['photo']) && $user['photo'] !== 'images/default-avatar.png' && file_exists('../../' . $user['photo'])) {
+                    unlink('../../' . $user['photo']);
                 }
                 $photo = 'uploads/' . $fileName;
             } else {
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     
     if (empty($errors)) {
-        include_once '../controller/UtilisateurController.php';
-        include_once '../model/user.php';
+        include_once '../../controller/UtilisateurController.php';
+        include_once '../../model/user.php';
         $uc = new UtilisateurController();
         
         try {
@@ -125,13 +125,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneWorld - Edit Profile</title>
 
-    <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-    <link href="../css/responsive.css" rel="stylesheet">
+    <link href="../../asset/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/responsive.css" rel="stylesheet">
     <!-- New Modern Green CSS -->
-    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href="../../css/modern-green.css" rel="stylesheet">
     
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
@@ -204,19 +204,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="../index.php">
-                    <img src="../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                <a class="navbar-brand page-scroll" href="../../index.php">
+                    <img src="../../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
                     OneWorld
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../index.php">HOME</a></li>
-                    <li><a href="../index.php#about">About</a></li>
-                    <li><a href="../index.php#contact">Contact</a></li>
-                    <li><a href="../index.php#services">Services</a></li>
-                    <li><a href="../index.php#news">News</a></li>
+                    <li><a href="../../index.php">HOME</a></li>
+                    <li><a href="../../index.php#about">About</a></li>
+                    <li><a href="../../index.php#contact">Contact</a></li>
+                    <li><a href="../../index.php#services">Services</a></li>
+                    <li><a href="../../index.php#news">News</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user"></i> <?php echo htmlspecialchars($user['prenom']); ?> <span class="caret"></span>
@@ -270,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="offer-card avatar-card">
                             <div class="photo-upload" style="position: relative; display: inline-block;">
                                 <?php 
-                                    $imgSrc = !empty($user['photo']) ? "../" . $user['photo'] : "../images/default-avatar.png"; 
+                                    $imgSrc = !empty($user['photo']) ? "../../" . $user['photo'] : "../../images/default-avatar.png"; 
                                 ?>
                                 <img src="<?php echo htmlspecialchars($imgSrc); ?>" 
                                      alt="Profile photo" 
@@ -388,9 +388,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../../js/jquery-2.1.1.min.js"></script>
+    <script src="../../asset/js/bootstrap.min.js"></script>
+    <script src="../../js/script.js"></script>
 
     <script>
         function previewImage(event) {
@@ -497,7 +497,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary btn-submit-app" href="../controller/AuthController.php?action=logout">Logout</a>
+                    <a class="btn btn-primary btn-submit-app" href="../../controller/AuthController.php?action=logout">Logout</a>
                 </div>
             </div>
         </div>

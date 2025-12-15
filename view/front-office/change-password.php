@@ -13,7 +13,7 @@ if (isset($_POST['verify_current_password'])) {
     $user_id = $_SESSION['user']['id'];
     $current_password = $_POST['current_password'] ?? '';
     
-    include '../controller/UtilisateurController.php';
+    include '../../controller/UtilisateurController.php';
     $uc = new UtilisateurController();
     $user_data = $uc->getUserById($user_id);
     
@@ -27,14 +27,14 @@ if (isset($_POST['verify_current_password'])) {
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: ../front-office/login.php");
     exit();
 }
 
 $user = $_SESSION['user'];
 
 // Check if user is a social login user (no password set yet)
-include '../controller/UtilisateurController.php';
+include '../../controller/UtilisateurController.php';
 $uc = new UtilisateurController();
 $user_data = $uc->getUserById($user['id']);
 $isSocialUser = ($user_data && (
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['verify_current_passw
                     $_SESSION['user']['mdp'] = $hashed_password;
                     
                     // Add to history
-                    include_once '../controller/HistoriqueC.php';
+                    include_once '../../controller/HistoriqueC.php';
                     include '../model/historique.php';
                     $hc = new HistoriqueC();
                     $historique = new Historique();
@@ -128,12 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['verify_current_passw
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneWorld - Change Password</title>
 
-    <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-    <link href="../css/responsive.css" rel="stylesheet">
-    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href="../../asset/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/responsive.css" rel="stylesheet">
+    <link href="../../css/modern-green.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
@@ -193,19 +193,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['verify_current_passw
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="../index.php">
-                    <img src="../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                <a class="navbar-brand page-scroll" href="../../index.php">
+                    <img src="../../images/logo.png" alt="OneWorld Logo" style="height: 45px; display: inline-block; vertical-align: middle; margin-right: 10px;">
                     OneWorld
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../index.php">HOME</a></li>
-                    <li><a href="../index.php#about">About</a></li>
-                    <li><a href="../index.php#contact">Contact</a></li>
-                    <li><a href="../index.php#services">Services</a></li>
-                    <li><a href="../index.php#news">News</a></li>
+                    <li><a href="../../index.php">HOME</a></li>
+                    <li><a href="../../index.php#about">About</a></li>
+                    <li><a href="../../index.php#contact">Contact</a></li>
+                    <li><a href="../../index.php#services">Services</a></li>
+                    <li><a href="../../index.php#news">News</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user"></i> <?php echo htmlspecialchars($user['prenom']); ?> <span class="caret"></span>
@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['verify_current_passw
                                         <i class="fa fa-check"></i> 
                                         <?php echo $isSocialUser ? 'Set Password' : 'Update Password'; ?>
                                     </button>
-                                    <a href="profil.php" class="btn btn-default btn-lg" style="margin-left: 10px;">
+                                    <a href="<?php echo ($user['role'] === 'admin') ? 'profile.php' : 'profil.php'; ?>" class="btn btn-default btn-lg" style="margin-left: 10px;">
                                         <i class="fa fa-times"></i> Cancel
                                     </a>
                                 </div>
@@ -368,15 +368,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['verify_current_passw
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../controller/AuthController.php?action=logout">Logout</a>
+                    <a class="btn btn-primary" href="../../controller/AuthController.php?action=logout">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../../js/jquery-2.1.1.min.js"></script>
+    <script src="../../asset/js/bootstrap.min.js"></script>
+    <script src="../../js/script.js"></script>
     
     <script>
         let currentPasswordValid = <?php echo $isSocialUser ? 'true' : 'false'; ?>;

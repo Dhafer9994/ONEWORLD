@@ -20,7 +20,7 @@ if (isset($_GET['add_success'])) {
     $add_success = urldecode($_GET['add_success']);
 }
 
-include '../controller/UtilisateurController.php';
+include '../../controller/UtilisateurController.php';
 
 $uc = new UtilisateurController();
 $users = $uc->getAll(); 
@@ -267,20 +267,20 @@ document.addEventListener('keydown', function(e) {
     <link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
   
     <!-- PLUGINS CSS STYLE -->
-    <link href="../assets/plugins/simplebar/simplebar.css" rel="stylesheet" />
-    <link href="../assets/plugins/nprogress/nprogress.css" rel="stylesheet" />
+    <link href="../../assets/plugins/simplebar/simplebar.css" rel="stylesheet" />
+    <link href="../../assets/plugins/nprogress/nprogress.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
   
     <!-- SLEEK CSS -->
-    <link id="sleek-css" rel="stylesheet" href="../assets/css/sleek.css" />
+    <link id="sleek-css" rel="stylesheet" href="../../assets/css/sleek.css" />
   
     <!-- CUSTOM CSS POUR ONEWORLD -->
-    <link rel="stylesheet" href="../assets/css/users.css">
+    <link rel="stylesheet" href="../../assets/css/users.css">
   
     <!-- FAVICON -->
-    <link href="../assets/img/favicon.png" rel="shortcut icon" />
+    <link href="../../assets/img/favicon.png" rel="shortcut icon" />
   
-    <script src="../assets/plugins/nprogress/nprogress.js"></script>
+    <script src="../../assets/plugins/nprogress/nprogress.js"></script>
 
     <style>
       .user-avatar {
@@ -375,10 +375,10 @@ document.addEventListener('keydown', function(e) {
 
     <div class="wrapper">
    
-      <?php include '../partials/sidebar.php'; ?>
+      <?php include 'partials/sidebar.php'; ?>
 
       <div class="page-wrapper">
-        <?php include '../partials/header.php'; ?>
+        <?php include 'partials/header.php'; ?>
 
         <div class="content-wrapper">
           <div class="content">
@@ -463,12 +463,12 @@ document.addEventListener('keydown', function(e) {
         </div>
 
         <!-- Footer -->
-        <?php include '../partials/footer.php'; ?>
+        <?php include 'partials/footer.php'; ?>
       </div>
     </div>
 
-    <script src="../assets/plugins/jquery/jquery.min.js"></script>
-    <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/plugins/jquery/jquery.min.js"></script>
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 

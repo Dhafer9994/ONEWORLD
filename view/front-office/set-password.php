@@ -3,14 +3,14 @@ session_start();
 
 
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: ../front-office/login.php");
     exit();
 }
 
 $user = $_SESSION['user'];
 
 
-include '../controller/UtilisateurController.php';
+include '../../controller/UtilisateurController.php';
 $uc = new UtilisateurController();
 $user_data = $uc->getUserById($user['id']);
 $needsPassword = ($user_data && (
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user']['mdp'] = $hashed_password;
                 
            
-                include_once '../controller/HistoriqueC.php';
+                include_once '../../controller/HistoriqueC.php';
                 include '../model/historique.php';
                 $hc = new HistoriqueC();
                 $historique = new Historique();
@@ -87,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OneWorld - Set Password</title>
 
-    <link href="../asset/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-    <link href="../css/responsive.css" rel="stylesheet">
-    <link href="../css/modern-green.css" rel="stylesheet">
+    <link href="../../asset/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/responsive.css" rel="stylesheet">
+    <link href="../../css/modern-green.css" rel="stylesheet">
     
     <style>
         .set-password-container {
@@ -246,8 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
+    <script src="../../js/jquery-2.1.1.min.js"></script>
+    <script src="../../asset/js/bootstrap.min.js"></script>
     
     <script>
         function togglePassword(inputId, button) {

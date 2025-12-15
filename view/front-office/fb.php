@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controller/AuthController.php';
+require_once '../../controller/AuthController.php';
 
 if (empty(FACEBOOK_APP_ID) || FACEBOOK_APP_ID === 'YOUR_FACEBOOK_APP_ID') {
     die('Please configure Facebook App ID in social_config.php');

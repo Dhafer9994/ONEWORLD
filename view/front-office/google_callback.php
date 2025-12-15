@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controller/AuthController.php';
+require_once '../../controller/AuthController.php';
 
 if (isset($_GET['code'])) {
     $client = new Google_Client();
@@ -54,7 +54,7 @@ if (isset($_GET['code'])) {
                 $h = new Historique("Connexion", date('Y-m-d H:i:s'), $existing_user['id']);
                 $hist->addHistorique($h);
                 
-                header("Location: " . ($existing_user['role'] === 'admin' ? 'profile.php' : 'profil.php'));
+                header("Location: " . ($existing_user['role'] === 'admin' ? '../dashboard/profile.php' : '../dashboard/profil.php'));
                 exit();
             } else {
               

@@ -1,6 +1,6 @@
 <?php
 
-include 'historiqueC.php';
+include __DIR__ . '/historiqueC.php';
 require_once dirname(__DIR__) . '/social_config.php';
 if (file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
     require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -215,11 +215,11 @@ class AuthController {
         if ($needsPassword) {
   
             error_log("Redirecting to set-password.php");
-            header("Location: ../view/set-password.php");
+            header("Location: /dash/theme/view/front-office/set-password.php");
         } elseif ($user['role'] === 'admin') {
-            header("Location: ../view/profile.php");
+            header("Location: /dash/theme/view/front-office/profile.php");
         } else {
-            header("Location: ../view/profil.php");
+            header("Location: /dash/theme/view/front-office/profil.php");
         }
         exit();
     }
@@ -246,9 +246,9 @@ class AuthController {
                 $_SESSION['user'] = $user;
 
                 if ($user['role'] === 'admin') {
-                    header("Location: ../view/profile.php");
+                    header("Location: /dash/theme/view/front-office/profile.php");
                 } else {
-                    header("Location: ../view/profil.php");
+                    header("Location: /dash/theme/view/front-office/profil.php");
                 }
                 exit();
             }
@@ -266,7 +266,7 @@ class AuthController {
         }
 
         session_destroy();
-        header("Location: ../view/login.php");
+        header("Location: /dash/theme/view/front-office/login.php");
         exit();
     }
 }

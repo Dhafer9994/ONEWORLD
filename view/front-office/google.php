@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../controller/AuthController.php';
+require_once '../../controller/AuthController.php';
 
 if (empty(GOOGLE_CLIENT_ID) || GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') {
     die('Please configure Google Client ID in social_config.php');
